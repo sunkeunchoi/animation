@@ -6,8 +6,19 @@ class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-      title: const Text("Flutter Animations"),
-    ));
+      appBar: AppBar(
+        title: const Text("Flutter Animations"),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () {},
+              child: const Text("Implicit Animations"),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
