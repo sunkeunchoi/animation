@@ -9,14 +9,17 @@ class PomodoroScreen extends StatefulWidget {
 }
 
 class _PomodoroScreenState extends State<PomodoroScreen> {
+  final ScrollController listViewController = ScrollController();
+  final ScrollController backgroundController = ScrollController();
   final maxRounds = 4;
   final maxGoals = 12;
   int currentRound = 0;
   int currentGoal = 0;
-  final List<int> minutes = [15, 20, 25, 30, 35];
+  final List<int> minutes = [5, 10, 15, 20, 25, 30, 35];
   late int currentMinuteIndex;
   late int remainingSeconds;
   late int resetSeconds;
+  final bool debug = true;
 
   bool isRunning = false;
   bool isCompleted = true;
@@ -33,7 +36,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
         currentGoal += 1;
         // Run BreakTimeTimer
         isBreakTime = true;
-        remainingSeconds = 10;
+        remainingSeconds = 5 * 60;
         isRunning = true;
         startTimer();
       }
@@ -71,14 +74,34 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
     setState(() {});
   }
 
+  void tabSelected(int index) {
+    currentMinuteIndex = index;
+    setTimer();
+    setState(() {});
+  }
+
+  void setTimer() {
+    if (debug) {
+      remainingSeconds = minutes[currentMinuteIndex];
+      resetSeconds = minutes[currentMinuteIndex];
+    } else {
+      remainingSeconds = minutes[currentMinuteIndex] * 60;
+      resetSeconds = minutes[currentMinuteIndex] * 60;
+    }
+  }
+
+  @override
+  void dispose() {
+    listViewController.dispose();
+    backgroundController.dispose();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
     currentMinuteIndex = minutes.length ~/ 2;
-    // remainingSeconds = minutes[currentMinuteIndex] * 60;
-    // remainingSeconds = minutes[currentMinuteIndex];
-    resetSeconds = 5;
-    remainingSeconds = 5;
+    setTimer();
   }
 
   @override
@@ -101,7 +124,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
           AspectRatio(
             aspectRatio: 4 / 3,
             child: SizedBox(
-              width: 400,
+              width: 300,
               child: Row(
                 children: [
                   DigitCard(digit: remainingSeconds ~/ 60),
@@ -118,12 +141,20 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
               ),
             ),
           ),
-          ConstrainedBox(
-            constraints: const BoxConstraints.tightForFinite(height: 80),
+          SizedBox(
+            height: 80,
             child: ListView.separated(
+              controller: listViewController,
               scrollDirection: Axis.horizontal,
-              itemBuilder: ((context, index) => MinuteButton(
-                    minute: minutes[index],
+              shrinkWrap: true,
+              itemBuilder: ((context, index) => GestureDetector(
+                    onTap: () {
+                      tabSelected(index);
+                    },
+                    child: MinuteButton(
+                      minute: minutes[index],
+                      isSelected: currentMinuteIndex == index,
+                    ),
                   )),
               separatorBuilder: (context, index) => const SizedBox(width: 20),
               itemCount: minutes.length,
@@ -224,15 +255,19 @@ class MinuteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var selectedColor = Theme.of(context).colorScheme.background;
+    var selectedBackgroundColor = Theme.of(context).colorScheme.onBackground;
+    var unSelectedColor = Theme.of(context).colorScheme.outline;
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 30,
         vertical: 10,
       ),
       decoration: BoxDecoration(
+        color: isSelected ? selectedBackgroundColor : selectedColor,
         border: Border.all(
           width: 5,
-          color: Theme.of(context).colorScheme.outline,
+          color: isSelected ? selectedBackgroundColor : unSelectedColor,
         ),
         borderRadius: BorderRadius.circular(
           5,
@@ -242,9 +277,10 @@ class MinuteButton extends StatelessWidget {
         child: Text(
           minute.toString().padLeft(2, "0"),
           textAlign: TextAlign.center,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.w900,
+            color: isSelected ? selectedColor : unSelectedColor,
           ),
         ),
       ),
@@ -272,13 +308,13 @@ class DigitCard extends StatelessWidget {
           child: Container(
             width: 100,
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.onBackground.withOpacity(0.8),
             ),
             child: Center(
               child: Text(
                 "$digit".padLeft(2, "0"),
                 style: TextStyle(
-                  fontSize: 100,
+                  fontSize: 80,
                   fontWeight: FontWeight.w900,
                   color: Theme.of(context).colorScheme.background,
                 ),
