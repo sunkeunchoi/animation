@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 class PomodoroScreen extends StatefulWidget {
@@ -8,7 +9,78 @@ class PomodoroScreen extends StatefulWidget {
 }
 
 class _PomodoroScreenState extends State<PomodoroScreen> {
+  final maxRounds = 4;
+  final maxGoals = 12;
+  int currentRound = 0;
+  int currentGoal = 0;
   final List<int> minutes = [15, 20, 25, 30, 35];
+  late int currentMinuteIndex;
+  late int remainingSeconds;
+  late int resetSeconds;
+
+  bool isRunning = false;
+  bool isCompleted = true;
+  bool isBreakTime = false;
+
+  void resetTimer() {
+    isRunning = false;
+    isCompleted = true;
+    remainingSeconds = resetSeconds;
+    if (!isBreakTime) {
+      currentRound += 1;
+      if (currentRound == maxRounds) {
+        currentRound = 0;
+        currentGoal += 1;
+        // Run BreakTimeTimer
+        isBreakTime = true;
+        remainingSeconds = 10;
+        isRunning = true;
+        startTimer();
+      }
+    } else {
+      isBreakTime = false;
+    }
+  }
+
+  void timerCallBack(Timer timer) {
+    if (isRunning) {
+      var next = switch (remainingSeconds) {
+        0 => () {
+            timer.cancel();
+            resetTimer();
+          },
+        > 0 => () => remainingSeconds -= 1,
+        _ => () => timer.cancel(),
+      };
+      setState(() {
+        next();
+      });
+    }
+  }
+
+  void startTimer() {
+    Timer.periodic(const Duration(seconds: 1), timerCallBack);
+  }
+
+  void onClick() {
+    isRunning = !isRunning;
+    if (isCompleted) {
+      isCompleted = false;
+      startTimer();
+    }
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    currentMinuteIndex = minutes.length ~/ 2;
+    // remainingSeconds = minutes[currentMinuteIndex] * 60;
+    // remainingSeconds = minutes[currentMinuteIndex];
+    resetSeconds = 5;
+    remainingSeconds = 5;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +104,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
               width: 400,
               child: Row(
                 children: [
-                  const DigitCard(digit: 12),
+                  DigitCard(digit: remainingSeconds ~/ 60),
                   Text(
                     ":",
                     style: TextStyle(
@@ -41,7 +113,7 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const DigitCard(digit: 57),
+                  DigitCard(digit: (remainingSeconds - (remainingSeconds ~/ 60) * 60)),
                 ],
               ),
             ),
@@ -58,31 +130,42 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
             ),
           ),
           const Divider(color: Colors.transparent),
-          GestureDetector(
-            onTap: () {},
-            child: CircleAvatar(
+          if (!isBreakTime)
+            GestureDetector(
+              onTap: onClick,
+              child: CircleAvatar(
+                backgroundColor: Theme.of(context).colorScheme.surfaceTint,
+                minRadius: 50,
+                child: Icon(
+                  isRunning ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                  color: Colors.white,
+                  size: 50,
+                ),
+              ),
+            ),
+          if (isBreakTime)
+            CircleAvatar(
               backgroundColor: Theme.of(context).colorScheme.surfaceTint,
               minRadius: 50,
               child: const Icon(
-                Icons.pause_rounded,
+                Icons.self_improvement_rounded,
                 color: Colors.white,
                 size: 50,
               ),
             ),
-          ),
           const Divider(color: Colors.transparent),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               CountCard(
                 label: "Round",
-                currentNumber: 1,
-                maxNumber: 4,
+                currentNumber: currentRound,
+                maxNumber: maxRounds,
               ),
               CountCard(
                 label: "Goal",
-                currentNumber: 0,
-                maxNumber: 12,
+                currentNumber: currentGoal,
+                maxNumber: maxGoals,
               ),
             ],
           ),
@@ -132,9 +215,11 @@ class CountCard extends StatelessWidget {
 
 class MinuteButton extends StatelessWidget {
   final int minute;
+  final bool isSelected;
   const MinuteButton({
     super.key,
     required this.minute,
+    this.isSelected = false,
   });
 
   @override
