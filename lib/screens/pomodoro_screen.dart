@@ -8,6 +8,7 @@ class PomodoroScreen extends StatefulWidget {
 }
 
 class _PomodoroScreenState extends State<PomodoroScreen> {
+  final List<int> minutes = [15, 20, 25, 30, 35];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +51,56 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
           const Divider(
             color: Colors.transparent,
           ),
+          ConstrainedBox(
+            constraints: const BoxConstraints.tightForFinite(height: 80),
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemBuilder: ((context, index) => MinuteButton(
+                    minute: minutes[index],
+                  )),
+              separatorBuilder: (context, index) => const SizedBox(width: 20),
+              itemCount: minutes.length,
+            ),
+          ),
+          const Divider(color: Colors.transparent),
         ],
+      ),
+    );
+  }
+}
+
+class MinuteButton extends StatelessWidget {
+  final int minute;
+  const MinuteButton({
+    super.key,
+    required this.minute,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 30,
+        vertical: 10,
+      ),
+      decoration: BoxDecoration(
+        border: Border.all(
+          width: 5,
+          color: Theme.of(context).colorScheme.outline,
+        ),
+        borderRadius: BorderRadius.circular(
+          5,
+        ),
+      ),
+      child: Center(
+        child: Text(
+          minute.toString().padLeft(2, "0"),
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
       ),
     );
   }
