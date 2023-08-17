@@ -22,6 +22,75 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
         centerTitle: false,
         titleSpacing: 10,
       ),
+      body: Column(
+        children: [
+          const Divider(
+            color: Colors.transparent,
+          ),
+          AspectRatio(
+            aspectRatio: 4 / 3,
+            child: SizedBox(
+              width: 400,
+              child: Row(
+                children: [
+                  const DigitCard(digit: 12),
+                  Text(
+                    ":",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.outline,
+                      fontSize: 60,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const DigitCard(digit: 57),
+                ],
+              ),
+            ),
+          ),
+          const Divider(
+            color: Colors.transparent,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DigitCard extends StatelessWidget {
+  final int digit;
+  const DigitCard({
+    super.key,
+    required this.digit,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 30,
+          vertical: 10,
+        ),
+        child: AspectRatio(
+          aspectRatio: 3 / 4,
+          child: Container(
+            width: 100,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            child: Center(
+              child: Text(
+                "$digit".padLeft(2, "0"),
+                style: TextStyle(
+                  fontSize: 100,
+                  fontWeight: FontWeight.w900,
+                  color: Theme.of(context).colorScheme.background,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -50,7 +119,7 @@ const ColorScheme pomodoroThemeColor = ColorScheme(
   onSurface: Color(0xfff1f1f1), // AppBar TitleText
   surfaceVariant: Color(0xff444346),
   onSurfaceVariant: Color(0xff000000),
-  outline: Color(0xffa4337d),
+  outline: Color(0xffe4978b),
   outlineVariant: Color(0xff2e2e2e),
   shadow: Color(0xff000000),
   scrim: Color(0xff000000),
