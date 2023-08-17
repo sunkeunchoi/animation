@@ -10,7 +10,19 @@ class PomodoroScreen extends StatefulWidget {
 class _PomodoroScreenState extends State<PomodoroScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Pomotimer".toUpperCase(),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            letterSpacing: 2,
+          ),
+        ),
+        centerTitle: false,
+        titleSpacing: 10,
+      ),
+    );
   }
 }
 
@@ -32,10 +44,10 @@ const ColorScheme pomodoroThemeColor = ColorScheme(
   onError: Color(0xff690005),
   errorContainer: Color(0xff93000a),
   onErrorContainer: Color(0xffffb4ab),
-  background: Color(0xff1f1f1f),
-  onBackground: Color(0xfff1f1f1),
-  surface: Color(0xff1f1f1f),
-  onSurface: Color(0xfff1f1f1),
+  background: Color(0xffd55846), // Body Backgound
+  onBackground: Color(0xfff1f1f1), // Body Text
+  surface: Color(0xffd55846), // AppBar Background
+  onSurface: Color(0xfff1f1f1), // AppBar TitleText
   surfaceVariant: Color(0xff444346),
   onSurfaceVariant: Color(0xff000000),
   outline: Color(0xffa4337d),
