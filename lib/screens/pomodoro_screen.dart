@@ -24,10 +24,8 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
         titleSpacing: 10,
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          const Divider(
-            color: Colors.transparent,
-          ),
           AspectRatio(
             aspectRatio: 4 / 3,
             child: SizedBox(
@@ -48,9 +46,6 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
               ),
             ),
           ),
-          const Divider(
-            color: Colors.transparent,
-          ),
           ConstrainedBox(
             constraints: const BoxConstraints.tightForFinite(height: 80),
             child: ListView.separated(
@@ -63,8 +58,74 @@ class _PomodoroScreenState extends State<PomodoroScreen> {
             ),
           ),
           const Divider(color: Colors.transparent),
+          GestureDetector(
+            onTap: () {},
+            child: CircleAvatar(
+              backgroundColor: Theme.of(context).colorScheme.surfaceTint,
+              minRadius: 50,
+              child: const Icon(
+                Icons.pause_rounded,
+                color: Colors.white,
+                size: 50,
+              ),
+            ),
+          ),
+          const Divider(color: Colors.transparent),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              CountCard(
+                label: "Round",
+                currentNumber: 1,
+                maxNumber: 4,
+              ),
+              CountCard(
+                label: "Goal",
+                currentNumber: 0,
+                maxNumber: 12,
+              ),
+            ],
+          ),
+          const Divider(color: Colors.transparent),
         ],
       ),
+    );
+  }
+}
+
+class CountCard extends StatelessWidget {
+  final int maxNumber;
+  final int currentNumber;
+  final String label;
+  const CountCard({
+    super.key,
+    required this.maxNumber,
+    required this.currentNumber,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          "${currentNumber.toString()}/${maxNumber.toString()}",
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.outline,
+            fontSize: 24,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        const Divider(color: Colors.transparent),
+        Text(
+          label.toUpperCase(),
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w900,
+          ),
+        )
+      ],
     );
   }
 }
@@ -176,5 +237,5 @@ const ColorScheme pomodoroThemeColor = ColorScheme(
   inverseSurface: Color(0xfffdfdfe),
   onInverseSurface: Color(0xff131313),
   inversePrimary: Color(0xff736f76),
-  surfaceTint: Color(0xffeae1f8),
+  surfaceTint: Color(0xffb04434),
 );
