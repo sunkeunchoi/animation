@@ -1,4 +1,4 @@
-import 'package:animation_class/screens/pomodoro_screen.dart';
+import 'package:animation_class/screens/movies_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,10 +15,10 @@ class MyApp extends StatelessWidget {
       title: 'Animations',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: pomodoroThemeColor,
+        colorScheme: movieTheme,
         useMaterial3: true,
       ),
-      home: const PomodoroScreen(),
+      home: const MoviesScreen(),
     );
   }
 }
