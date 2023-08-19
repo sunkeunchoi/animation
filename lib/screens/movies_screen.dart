@@ -1,14 +1,227 @@
+import 'package:animation_class/screens/movie_repository.dart';
 import 'package:flutter/material.dart';
 
-class MoviesScreen extends StatelessWidget {
+class MoviesScreen extends StatefulWidget {
   const MoviesScreen({super.key});
+
+  @override
+  State<MoviesScreen> createState() => _MoviesScreenState();
+}
+
+typedef ButtonConstructor = Widget Function({
+  required VoidCallback onPressed,
+  required Widget child,
+});
+
+class _MoviesScreenState extends State<MoviesScreen> {
+  late final MovieRespository movieRepository;
+  late final Future<List<Movie>> popularMovies;
+  late final Future<List<Movie>> nowPlayingMovies;
+  late final Future<List<Movie>> comingSoonMovies;
+  @override
+  void initState() {
+    super.initState();
+    movieRepository = MovieRespository();
+    popularMovies = movieRepository.getPopularMovies();
+    nowPlayingMovies = movieRepository.getNowPlayingMovies();
+    comingSoonMovies = movieRepository.getComingSoonMovies();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Movies Screen"),
+      appBar: AppBar(),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                MoviesContainer(
+                  future: popularMovies,
+                  moviesType: Movies.popular,
+                ),
+                const Divider(color: Colors.transparent),
+                MoviesContainer(
+                  future: nowPlayingMovies,
+                  moviesType: Movies.nowPlaying,
+                ),
+                const Divider(color: Colors.transparent),
+                MoviesContainer(
+                  future: comingSoonMovies,
+                  moviesType: Movies.comingSoon,
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
+    );
+  }
+}
+
+class MovieCard extends StatelessWidget {
+  const MovieCard({
+    super.key,
+    required this.url,
+    this.title,
+    required this.id,
+    required this.aspectRatio,
+  });
+  final String url;
+  final String? title;
+  final int id;
+  final double width = 300;
+  final double aspectRatio;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: Container(
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: AspectRatio(
+              aspectRatio: aspectRatio,
+              child: Image.network(
+                "https://image.tmdb.org/t/p/w500/$url",
+                fit: BoxFit.cover,
+                width: width,
+              ),
+            ),
+          ),
+        ),
+        if (title != null)
+          SizedBox(
+            height: 100,
+            width: width,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 15,
+              ),
+              child: Text(
+                title.toString(),
+                style: Theme.of(context).textTheme.titleLarge,
+                maxLines: 3,
+                softWrap: true,
+                textAlign: TextAlign.start,
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+enum Movies implements Comparable<Movies> {
+  popular(
+    title: "Popular Movies",
+  ),
+  nowPlaying(
+    title: "Now Playing Movies",
+  ),
+  comingSoon(
+    title: "Coming Soon Movies",
+  );
+
+  const Movies({
+    required this.title,
+  });
+  final String title;
+  @override
+  int compareTo(Movies other) => index.compareTo(other.index);
+}
+
+extension MoviesExtension on Movies {
+  MovieCard getCard(int id, String url, String title) => switch (this) {
+        Movies.popular => MovieCard(
+            url: url,
+            id: id,
+            aspectRatio: 5 / 3,
+          ),
+        Movies.nowPlaying => MovieCard(
+            url: url,
+            title: title,
+            id: id,
+            aspectRatio: 1,
+          ),
+        Movies.comingSoon => MovieCard(
+            url: url,
+            id: id,
+            aspectRatio: 3 / 5,
+          ),
+      };
+}
+
+class MoviesContainer extends StatelessWidget {
+  const MoviesContainer({
+    super.key,
+    required this.future,
+    required this.moviesType,
+  });
+  final Future<List<Movie>> future;
+  final Movies moviesType;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          moviesType.title,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        const Divider(color: Colors.transparent),
+        FutureBuilder(
+          future: future,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return SizedBox(
+                height: 400,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) => moviesType.getCard(
+                    snapshot.data![index].id,
+                    snapshot.data![index].posterPath.toString(),
+                    snapshot.data![index].title.toString(),
+                  ),
+                  itemCount: snapshot.data!.length,
+                  separatorBuilder: (context, index) => const SizedBox(
+                    width: 16,
+                  ),
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+            return const CircularProgressIndicator();
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class Placeholder extends StatelessWidget {
+  const Placeholder({
+    super.key,
+    required this.color,
+    required this.title,
+  });
+
+  final Color color;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(8.0),
+      width: 100,
+      height: 100,
+      color: color,
+      child: Text(title),
     );
   }
 }
