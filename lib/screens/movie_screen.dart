@@ -2,8 +2,13 @@ import 'package:animation_class/screens/movie_repository.dart';
 import 'package:flutter/material.dart';
 
 class MovieScreen extends StatelessWidget {
-  const MovieScreen({super.key, required this.future});
+  const MovieScreen({
+    super.key,
+    required this.future,
+    required this.tag,
+  });
   final Future<MovieDetail> future;
+  final String tag;
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -17,9 +22,14 @@ class MovieScreen extends StatelessWidget {
             ),
             body: Column(
               children: [
-                Image.network(
-                  'https://image.tmdb.org/t/p/w500/${data.backdropPath}',
-                  fit: BoxFit.cover,
+                Expanded(
+                  child: Hero(
+                    tag: tag,
+                    child: Image.network(
+                      'https://image.tmdb.org/t/p/w500/${data.backdropPath}',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
                 const Divider(color: Colors.transparent),
                 Text(data.overview.toString()),

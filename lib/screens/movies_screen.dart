@@ -80,10 +80,12 @@ class MovieCard extends StatelessWidget {
     this.title,
     required this.id,
     required this.aspectRatio,
+    required this.tag,
   });
   final String url;
   final String? title;
   final int id;
+  final String tag;
   final double width = 300;
   final double aspectRatio;
   @override
@@ -91,24 +93,27 @@ class MovieCard extends StatelessWidget {
     return Column(
       children: [
         Expanded(
-          child: Container(
-            clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).colorScheme.shadow.withOpacity(0.5),
-                  blurRadius: 3,
-                  offset: const Offset(5, 5),
+          child: Hero(
+            tag: tag,
+            child: Container(
+              clipBehavior: Clip.hardEdge,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(context).colorScheme.shadow.withOpacity(0.5),
+                    blurRadius: 3,
+                    offset: const Offset(5, 5),
+                  ),
+                ],
+              ),
+              child: AspectRatio(
+                aspectRatio: aspectRatio,
+                child: Image.network(
+                  "https://image.tmdb.org/t/p/w500/$url",
+                  fit: BoxFit.cover,
+                  width: width,
                 ),
-              ],
-            ),
-            child: AspectRatio(
-              aspectRatio: aspectRatio,
-              child: Image.network(
-                "https://image.tmdb.org/t/p/w500/$url",
-                fit: BoxFit.cover,
-                width: width,
               ),
             ),
           ),
@@ -155,25 +160,26 @@ enum Movies implements Comparable<Movies> {
   final String title;
   @override
   int compareTo(Movies other) => index.compareTo(other.index);
+  String getTag(int id) => "${this}_$id";
 }
 
 extension MoviesExtension on Movies {
   MovieCard getCard(int id, String url, String title) => switch (this) {
         Movies.popular => MovieCard(
-            key: ValueKey("popular_movie_$id"),
+            tag: getTag(id),
             url: url,
             id: id,
             aspectRatio: 5 / 3,
           ),
         Movies.nowPlaying => MovieCard(
-            key: ValueKey("now_playing_$id"),
+            tag: getTag(id),
             url: url,
             title: title,
             id: id,
             aspectRatio: 1,
           ),
         Movies.comingSoon => MovieCard(
-            key: ValueKey("coming_soon_$id"),
+            tag: getTag(id),
             url: url,
             id: id,
             aspectRatio: 3 / 5,
@@ -218,6 +224,9 @@ class MoviesContainer extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => MovieScreen(
                             future: movieRepository.getByMovieId(
+                              snapshot.data![index].id,
+                            ),
+                            tag: moviesType.getTag(
                               snapshot.data![index].id,
                             ),
                           ),
