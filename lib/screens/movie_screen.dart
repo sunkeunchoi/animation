@@ -19,25 +19,33 @@ class MovieScreen extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: Text(data.title.toString()),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
             ),
-            body: Column(
+            extendBodyBehindAppBar: true,
+            body: Stack(
               children: [
-                Expanded(
-                  child: Hero(
-                    tag: tag,
-                    child: Image.network(
-                      'https://image.tmdb.org/t/p/w500/${data.backdropPath}',
-                      fit: BoxFit.cover,
-                    ),
+                Hero(
+                  tag: tag,
+                  child: Image.network(
+                    'https://image.tmdb.org/t/p/w500/${data.backdropPath}',
+                    fit: BoxFit.cover,
+                    height: double.infinity,
+                    width: double.infinity,
+                    alignment: Alignment.center,
                   ),
                 ),
-                const Divider(color: Colors.transparent),
-                Text(data.overview.toString()),
-                const Divider(color: Colors.transparent),
-                Text(data.imdbId.toString()),
-                const Divider(color: Colors.transparent),
-                Text(data.originalLanguage.toString()),
-                const Divider(color: Colors.transparent),
+                Column(
+                  children: [
+                    const Divider(color: Colors.transparent),
+                    Text(data.overview.toString()),
+                    const Divider(color: Colors.transparent),
+                    Text(data.imdbId.toString()),
+                    const Divider(color: Colors.transparent),
+                    Text(data.originalLanguage.toString()),
+                    const Divider(color: Colors.transparent),
+                  ],
+                ),
               ],
             ),
           );
