@@ -1,4 +1,5 @@
 import 'package:animation_class/screens/movie_repository.dart';
+import 'package:animation_class/screens/movie_screen.dart';
 import 'package:flutter/material.dart';
 
 class MoviesScreen extends StatefulWidget {
@@ -27,6 +28,10 @@ class _MoviesScreenState extends State<MoviesScreen> {
     comingSoonMovies = movieRepository.getComingSoonMovies();
   }
 
+  Future<MovieDetail> getMovieDetail(int id) async {
+    return await movieRepository.getByMovieId(id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,16 +49,19 @@ class _MoviesScreenState extends State<MoviesScreen> {
                 MoviesContainer(
                   future: popularMovies,
                   moviesType: Movies.popular,
+                  movieRepository: movieRepository,
                 ),
                 const Divider(color: Colors.transparent),
                 MoviesContainer(
                   future: nowPlayingMovies,
                   moviesType: Movies.nowPlaying,
+                  movieRepository: movieRepository,
                 ),
                 const Divider(color: Colors.transparent),
                 MoviesContainer(
                   future: comingSoonMovies,
                   moviesType: Movies.comingSoon,
+                  movieRepository: movieRepository,
                 ),
                 const Divider(color: Colors.transparent),
               ],
@@ -178,9 +186,11 @@ class MoviesContainer extends StatelessWidget {
     super.key,
     required this.future,
     required this.moviesType,
+    required this.movieRepository,
   });
   final Future<List<Movie>> future;
   final Movies moviesType;
+  final MovieRespository movieRepository;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -201,10 +211,24 @@ class MoviesContainer extends StatelessWidget {
                 height: 400,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) => moviesType.getCard(
-                    snapshot.data![index].id,
-                    snapshot.data![index].posterPath.toString(),
-                    snapshot.data![index].title.toString(),
+                  itemBuilder: (context, index) => GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MovieScreen(
+                            future: movieRepository.getByMovieId(
+                              snapshot.data![index].id,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    child: moviesType.getCard(
+                      snapshot.data![index].id,
+                      snapshot.data![index].posterPath.toString(),
+                      snapshot.data![index].title.toString(),
+                    ),
                   ),
                   itemCount: snapshot.data!.length,
                   separatorBuilder: (context, index) => const SizedBox(
