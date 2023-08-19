@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 
-final class MovieClient implements IMovieClient {
-  MovieClient({http.Client? httpClient}) : _httpClient = httpClient ?? http.Client();
+final class MovieRespository implements IMovieRepository {
+  MovieRespository({http.Client? httpClient}) : _httpClient = httpClient ?? http.Client();
 
   static const _baseUrl = 'movies-api.nomadcoders.workers.dev';
 
@@ -44,7 +44,7 @@ final class MovieClient implements IMovieClient {
   }
 }
 
-abstract interface class IMovieClient {
+abstract interface class IMovieRepository {
   Future<List<Movie>> getPopularMovies();
   Future<List<Movie>> getNowPlayingMovies();
   Future<List<Movie>> getComingSoonMovies();
