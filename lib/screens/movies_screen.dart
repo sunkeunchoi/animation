@@ -138,17 +138,20 @@ enum Movies implements Comparable<Movies> {
 extension MoviesExtension on Movies {
   MovieCard getCard(int id, String url, String title) => switch (this) {
         Movies.popular => MovieCard(
+            key: ValueKey("popular_movie_$id"),
             url: url,
             id: id,
             aspectRatio: 5 / 3,
           ),
         Movies.nowPlaying => MovieCard(
+            key: ValueKey("now_playing_$id"),
             url: url,
             title: title,
             id: id,
             aspectRatio: 1,
           ),
         Movies.comingSoon => MovieCard(
+            key: ValueKey("coming_soon_$id"),
             url: url,
             id: id,
             aspectRatio: 3 / 5,
@@ -182,6 +185,10 @@ class MoviesContainer extends StatelessWidget {
                 height: 400,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   itemBuilder: (context, index) => moviesType.getCard(
                     snapshot.data![index].id,
                     snapshot.data![index].posterPath.toString(),
