@@ -216,6 +216,9 @@ class MoviesContainer extends StatelessWidget {
               return SizedBox(
                 height: 400,
                 child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                  ),
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) => GestureDetector(
                     onTap: () {
