@@ -12,7 +12,7 @@ final class MovieRespository implements IMovieRepository {
   @override
   Future<MovieDetail> getByMovieId(int id) async {
     var request = Uri.https(_baseUrl, 'movie', {'id': id.toString()});
-    final response = await _httpClient.get(request);
+    final response = await _httpClient.get(request, headers: {'Content-Type': 'application/json; charset=utf-8'});
     if (response.statusCode != 200) {
       throw Exception("GetByMovieId $id failed with ${response.statusCode}");
     }
@@ -69,6 +69,7 @@ class MovieDetail {
   num? runtime;
   num? voteAverage;
   num? voteCount;
+  List<String>? genres;
 
   MovieDetail({
     required this.id,
@@ -88,7 +89,12 @@ class MovieDetail {
     this.title,
     this.voteAverage,
     this.voteCount,
+    this.genres,
   });
+  String getRunTime() => runtime == null ? "" : '${runtime! ~/ 60}h ${runtime! % 60}min';
+  String getGenres() => genres == null ? "" : genres!.join(', ');
+  String getRunTimeAndGenres() => '${getRunTime()} | ${getGenres()}';
+  num getFavoriteRate() => voteAverage == null ? 0 : voteAverage! / 2;
   factory MovieDetail.fromJson(Map<String, dynamic> json) {
     if (json
         case {
@@ -109,7 +115,9 @@ class MovieDetail {
           'tagline': final tagline,
           'vote_average': num voteAverage,
           'vote_count': num voteCount,
+          'genres': List<dynamic> genres,
         }) {
+      print(overview);
       return MovieDetail(
         backdropPath: backdropPath,
         homepage: homepage,
@@ -128,6 +136,7 @@ class MovieDetail {
         title: title,
         voteAverage: voteAverage,
         voteCount: voteCount,
+        genres: genres.map((e) => e['name'] as String).toList(),
       );
     } else {
       print('Invalid movie detail format: $json');
