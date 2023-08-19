@@ -1,16 +1,11 @@
-# animation_class
+# Movieflix Challenge
 
-A new Flutter project.
+-  https://movies-api.nomadcoders.workers.dev/popular
+- https://movies-api.nomadcoders.workers.dev/now-playing
+- https://movies-api.nomadcoders.workers.dev/coming-soon
+- https://movies-api.nomadcoders.workers.dev/movie?id=1 
 
-## Getting Started
+## Api Client (Repository)
+[Blog Tutorial Reference](https://bloclibrary.dev/#/flutterweathertutorial)
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+[Dart 3.1 Switch Reference](https://codelabs.developers.google.com/codelabs/dart-patterns-records#7)
