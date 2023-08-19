@@ -38,12 +38,9 @@ final class MovieClient implements IMovieClient {
   Future<List<Movie>> _getMovies(String name) async {
     var request = Uri.https(_baseUrl, name);
     final response = await _httpClient.get(request);
-    final json = jsonDecode(response.body) as Map;
+    final json = jsonDecode(response.body) as Map<String, dynamic>;
     if (!json.containsKey('results')) throw Exception("$name results not exist");
-    final results = json['results'] as List;
-    if (results.isEmpty) throw Exception("$name not found");
-
-    return results.map((e) => Movie.fromJson(e as Map<String, dynamic>)).toList();
+    return Movie.getMoviesFromJson(json);
   }
 }
 
@@ -92,7 +89,6 @@ class MovieDetail {
     this.voteAverage,
     this.voteCount,
   });
-
   factory MovieDetail.fromJson(Map<String, dynamic> json) {
     if (json
         case {
@@ -167,6 +163,18 @@ class Movie {
     this.voteCount,
   });
 
+  static List<Movie> getMoviesFromJson(final Map<String, dynamic> json) {
+    if (json
+        case {
+          'results': List results,
+        }) {
+      return [for (final result in results) Movie.fromJson(result)];
+    } else {
+      print('Invalid movie format: $json');
+      throw const FormatException('Invalid movies format');
+    }
+  }
+
   factory Movie.fromJson(Map<String, dynamic> json) {
     if (json
         case {
@@ -196,6 +204,7 @@ class Movie {
       throw const FormatException('Invalid movie format');
     }
   }
+
   @override
   String toString() {
     return 'Movie{id: $id, title: $title, overview: $overview, posterPath: $posterPath, backdropPath: $backdropPath, releaseDate: $releaseDate, popularity: $popularity, voteAverage: $voteAverage, voteCount: $voteCount}';
