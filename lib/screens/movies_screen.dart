@@ -34,7 +34,10 @@ class _MoviesScreenState extends State<MoviesScreen> {
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 20,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -52,6 +55,7 @@ class _MoviesScreenState extends State<MoviesScreen> {
                   future: comingSoonMovies,
                   moviesType: Movies.comingSoon,
                 ),
+                const Divider(color: Colors.transparent),
               ],
             ),
           ),
@@ -83,6 +87,13 @@ class MovieCard extends StatelessWidget {
             clipBehavior: Clip.hardEdge,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).colorScheme.shadow.withOpacity(0.5),
+                  blurRadius: 3,
+                  offset: const Offset(5, 5),
+                ),
+              ],
             ),
             child: AspectRatio(
               aspectRatio: aspectRatio,
@@ -101,10 +112,13 @@ class MovieCard extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(
                 top: 15,
+                left: 10,
               ),
               child: Text(
                 title.toString(),
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w900,
+                    ),
                 maxLines: 3,
                 softWrap: true,
                 textAlign: TextAlign.start,
@@ -174,7 +188,9 @@ class MoviesContainer extends StatelessWidget {
       children: [
         Text(
           moviesType.title,
-          style: Theme.of(context).textTheme.titleLarge,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w900,
+              ),
         ),
         const Divider(color: Colors.transparent),
         FutureBuilder(
@@ -185,10 +201,6 @@ class MoviesContainer extends StatelessWidget {
                 height: 400,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
                   itemBuilder: (context, index) => moviesType.getCard(
                     snapshot.data![index].id,
                     snapshot.data![index].posterPath.toString(),
@@ -196,7 +208,7 @@ class MoviesContainer extends StatelessWidget {
                   ),
                   itemCount: snapshot.data!.length,
                   separatorBuilder: (context, index) => const SizedBox(
-                    width: 16,
+                    width: 24,
                   ),
                 ),
               );
@@ -235,7 +247,7 @@ class Placeholder extends StatelessWidget {
 
 const ColorScheme movieTheme = ColorScheme(
   brightness: Brightness.dark,
-  primary: Color(0xffeae1f8),
+  primary: Color(0xff141414),
   onPrimary: Color(0xff141414),
   primaryContainer: Color(0xfffdf771),
   onPrimaryContainer: Color(0xff000000),
@@ -251,15 +263,15 @@ const ColorScheme movieTheme = ColorScheme(
   onError: Color(0xff690005),
   errorContainer: Color(0xff93000a),
   onErrorContainer: Color(0xffffb4ab),
-  background: Color(0xff1f1f1f),
-  onBackground: Color(0xfff1f1f1),
-  surface: Color(0xff1f1f1f),
-  onSurface: Color(0xfff1f1f1),
+  background: Color(0xffeae1f8),
+  onBackground: Color(0xff141414),
+  surface: Color(0xffeae1f8),
+  onSurface: Color(0xff141414),
   surfaceVariant: Color(0xff444346),
   onSurfaceVariant: Color(0xff000000),
   outline: Color(0xffa4337d),
   outlineVariant: Color(0xff2e2e2e),
-  shadow: Color(0xff000000),
+  shadow: Color(0xff141414),
   scrim: Color(0xff000000),
   inverseSurface: Color(0xfffdfdfe),
   onInverseSurface: Color(0xff131313),
