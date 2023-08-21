@@ -1,4 +1,5 @@
 import 'package:animation_class/screens/movies/movies_screen.dart';
+import 'package:animation_class/screens/onboarding/initial_screen.dart';
 import 'package:flutter/material.dart';
 
 class MenuScreen extends StatelessWidget {
@@ -17,12 +18,19 @@ class MenuScreen extends StatelessWidget {
         appBar: AppBar(),
         body: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               ElevatedButton(
                 onPressed: () {
                   _goto(context, const MoviesScreen());
                 },
                 child: const Text("Movies"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _goto(context, const InitialScreen());
+                },
+                child: const Text("Onboarding"),
               ),
             ],
           ),

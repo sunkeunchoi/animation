@@ -1,7 +1,7 @@
-import 'package:animation_class/screens/movies/movies_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/menu_screen.dart';
+import 'screens/onboarding/initial_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Animations',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: movieTheme,
+        colorScheme: onBoardingColors,
         useMaterial3: true,
       ),
       home: const MenuScreen(),
