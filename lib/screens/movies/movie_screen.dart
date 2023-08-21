@@ -1,4 +1,4 @@
-import 'package:animation_class/screens/movie_repository.dart';
+import 'package:animation_class/screens/movies/movie_repository.dart';
 import 'package:flutter/material.dart';
 
 class MovieScreen extends StatelessWidget {

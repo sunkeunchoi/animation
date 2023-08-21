@@ -1,4 +1,4 @@
-import 'package:animation_class/screens/movies_screen.dart';
+import 'package:animation_class/screens/movies/movies_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
