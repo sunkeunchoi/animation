@@ -1,3 +1,4 @@
+import 'package:animation_class/screens/onboarding/create_account_bloc.dart';
 import 'package:animation_class/screens/onboarding/svg/twitter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
 class CreateAccountScreen extends StatelessWidget {
-  const CreateAccountScreen({super.key});
+  final CreateAccountBloc _bloc = CreateAccountBloc();
+  CreateAccountScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +32,8 @@ class CreateAccountScreen extends StatelessWidget {
         ),
         leadingWidth: 100,
       ),
-      body: const Padding(
-        padding: EdgeInsets.symmetric(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
           horizontal: 30,
           vertical: 10,
         ),
@@ -39,7 +41,7 @@ class CreateAccountScreen extends StatelessWidget {
           width: double.infinity,
           child: Column(
             children: [
-              Align(
+              const Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Create Account",
@@ -50,14 +52,21 @@ class CreateAccountScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 20),
               TextWidget(
                 fieldType: TextFieldType.name,
+                stream: _bloc.nameStream,
+                onChanged: (String text) => _bloc.updateName(text),
               ),
               TextWidget(
                 fieldType: TextFieldType.email,
+                stream: _bloc.emailStream,
+                onChanged: (String text) => _bloc.updateEmail(text),
               ),
               TextWidget(
                 fieldType: TextFieldType.dob,
+                stream: _bloc.dobStream,
+                onChanged: (String text) => _bloc.updateDob(text),
               ),
             ],
           ),
@@ -79,7 +88,7 @@ extension on TextFieldType {
       case TextFieldType.name:
         return "Name";
       case TextFieldType.email:
-        return "Email";
+        return "Phone number or email address";
       case TextFieldType.dob:
         return "Date of birth";
     }
@@ -90,8 +99,12 @@ class TextWidget extends StatefulWidget {
   const TextWidget({
     super.key,
     required this.fieldType,
+    required this.stream,
+    required this.onChanged,
   });
   final TextFieldType fieldType;
+  final Stream<String> stream;
+  final Function(String) onChanged;
 
   @override
   State<TextWidget> createState() => _TextWidgetState();
@@ -100,13 +113,14 @@ class TextWidget extends StatefulWidget {
 class _TextWidgetState extends State<TextWidget> {
   final TextEditingController _controller = TextEditingController();
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   void _onTap(BuildContext context) async {
     {
-      // DateTime? pickedDate = await showDatePicker(
-      //   context: context, initialDate: DateTime.now(),
-      //   firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
-      //   lastDate: DateTime(2101),
-      // );
       showBottomSheet(
         context: context,
         builder: (BuildContext context) => Container(
@@ -133,51 +147,45 @@ class _TextWidgetState extends State<TextWidget> {
               minimumYear: 1900,
               mode: CupertinoDatePickerMode.date,
               onDateTimeChanged: (DateTime value) {
+                var text = DateFormat.yMMMMd('en_US').format(value);
                 setState(() {
-                  _controller.text = DateFormat.yMMMMd('en_US').format(value);
+                  _controller.text = text;
                 });
               },
             ),
           ),
         ),
       );
-
-      // if (pickedDate != null) {
-      //   // print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-      //   // String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-      //   // print(formattedDate); //formatted date output using intl package =>  2021-03-16
-      //   //you can implement different kind of Date Format here according to your requirement
-      //   String formattedDate = DateFormat.yMMMMd('en_US').format(pickedDate);
-      //   setState(() {
-      //     _controller.text = formattedDate; //set output date to TextField value.
-      //   });
-      // }
     }
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: _controller,
-      onTap: widget.fieldType == TextFieldType.dob ? () => _onTap(context) : null,
-      readOnly: widget.fieldType == TextFieldType.dob ? true : false,
-      decoration: InputDecoration(
-        focusColor: Colors.black,
-        suffix: const Icon(
-          Icons.check_circle,
-          color: Colors.green,
-          size: 28,
+    return StreamBuilder(
+      stream: widget.stream,
+      builder: (BuildContext context, AsyncSnapshot<String> textStream) => TextField(
+        controller: _controller,
+        onChanged: widget.onChanged,
+        onTap: widget.fieldType == TextFieldType.dob ? () => _onTap(context) : null,
+        readOnly: widget.fieldType == TextFieldType.dob ? true : false,
+        style: TextStyle(
+          color: Colors.blue.shade600,
+          fontSize: 20,
+          fontWeight: FontWeight.w500,
         ),
-        helperText: widget.fieldType == TextFieldType.dob
-            ? "This will not be shown publicly. Confirm your own age, even if this account is for a business, a pet, or something else."
-            : null,
-        labelText: widget.fieldType.title,
+        decoration: InputDecoration(
+          focusColor: Colors.black,
+          suffix: const Icon(
+            Icons.check_circle,
+            color: Colors.green,
+            size: 28,
+          ),
+          helperText: widget.fieldType == TextFieldType.dob
+              ? "This will not be shown publicly. Confirm your own age, even if this account is for a business, a pet, or something else."
+              : null,
+          labelText: widget.fieldType.title,
+          errorText: textStream.hasError ? textStream.error.toString() : null,
+        ),
       ),
     );
   }
