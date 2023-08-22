@@ -107,28 +107,51 @@ class _TextWidgetState extends State<TextWidget> {
       //   firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
       //   lastDate: DateTime(2101),
       // );
-      DateTime? pickedDate = await showModalBottomSheet(
+      showBottomSheet(
         context: context,
-        builder: (BuildContext context) => CupertinoDatePicker(
-          initialDateTime: DateTime.now(),
-          maximumDate: DateTime.now(),
-          minimumYear: 2018,
-          maximumYear: 2020,
-          mode: CupertinoDatePickerMode.date,
-          onDateTimeChanged: (DateTime value) {},
+        builder: (BuildContext context) => Container(
+          height: MediaQuery.of(context).copyWith().size.height / 3,
+          decoration: const BoxDecoration(
+            border: Border(
+              top: BorderSide(color: Colors.grey, width: 0.5),
+            ),
+          ),
+          child: CupertinoTheme(
+            data: const CupertinoThemeData(
+              textTheme: CupertinoTextThemeData(
+                primaryColor: CupertinoColors.white,
+                dateTimePickerTextStyle: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            child: CupertinoDatePicker(
+              initialDateTime: DateTime.now(),
+              maximumDate: DateTime.now(),
+              minimumYear: 1900,
+              mode: CupertinoDatePickerMode.date,
+              onDateTimeChanged: (DateTime value) {
+                setState(() {
+                  _controller.text = DateFormat.yMMMMd('en_US').format(value);
+                });
+              },
+            ),
+          ),
         ),
       );
 
-      if (pickedDate != null) {
-        // print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-        // String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-        // print(formattedDate); //formatted date output using intl package =>  2021-03-16
-        //you can implement different kind of Date Format here according to your requirement
-        String formattedDate = DateFormat.yMMMMd('en_US').format(pickedDate);
-        setState(() {
-          _controller.text = formattedDate; //set output date to TextField value.
-        });
-      }
+      // if (pickedDate != null) {
+      //   // print(pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+      //   // String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+      //   // print(formattedDate); //formatted date output using intl package =>  2021-03-16
+      //   //you can implement different kind of Date Format here according to your requirement
+      //   String formattedDate = DateFormat.yMMMMd('en_US').format(pickedDate);
+      //   setState(() {
+      //     _controller.text = formattedDate; //set output date to TextField value.
+      //   });
+      // }
     }
   }
 
