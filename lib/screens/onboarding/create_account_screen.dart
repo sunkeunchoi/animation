@@ -7,18 +7,34 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
 class CreateAccountScreen extends StatefulWidget {
-  const CreateAccountScreen({super.key});
-
+  const CreateAccountScreen({
+    super.key,
+    this.name = "",
+    this.email = "",
+    this.dob = "",
+    this.isAgreed = false,
+  });
+  final String name;
+  final String email;
+  final String dob;
+  final bool isAgreed;
   @override
   State<CreateAccountScreen> createState() => _CreateAccountScreenState();
 }
 
 class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController _nameController = TextEditingController();
-
   final TextEditingController _emailController = TextEditingController();
-
   final TextEditingController _dobController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController.text = widget.name;
+    _emailController.text = widget.email;
+    _dobController.text = widget.dob;
+  }
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -57,7 +73,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
         ),
         child: SizedBox(
           width: double.infinity,
-          height: MediaQuery.of(context).copyWith().size.height / 2 * 1.05,
+          // height: MediaQuery.of(context).copyWith().size.height / 2 * 1.05,
           child: Column(
             children: [
               const Align(
@@ -75,38 +91,55 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               TextWidget(
                 fieldType: TextFieldType.name,
                 controller: _nameController,
+                onTap: () => setState(() {}),
               ),
               TextWidget(
                 fieldType: TextFieldType.email,
                 controller: _emailController,
+                onTap: () => setState(() {}),
               ),
               TextWidget(
                 fieldType: TextFieldType.dob,
                 controller: _dobController,
+                onTap: () => setState(() {}),
               ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: NextButton(
-                    isDisabled:
-                        _nameController.text.isEmpty || _emailController.text.isEmpty || _dobController.text.isEmpty
-                            ? true
-                            : false,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CustomizeExperienceScreen(
-                            name: _nameController.text,
-                            email: _emailController.text,
-                            dob: _dobController.text,
+              if (!widget.isAgreed)
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: GestureDetector(
+                      onTap: () {
+                        if (_nameController.text.isEmpty ||
+                            _emailController.text.isEmpty ||
+                            _dobController.text.isEmpty) {
+                          return;
+                        }
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CustomizeExperienceScreen(
+                              name: _nameController.text,
+                              email: _emailController.text,
+                              dob: _dobController.text,
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                      child: NextButton(
+                        isDisabled:
+                            _nameController.text.isEmpty || _emailController.text.isEmpty || _dobController.text.isEmpty
+                                ? true
+                                : false,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              if (widget.isAgreed) ...[
+                const Expanded(
+                  child: SizedBox(height: 20),
+                ),
+                const SignUpButton(),
+              ],
             ],
           ),
         ),
@@ -115,37 +148,122 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   }
 }
 
+class SignUpButton extends StatelessWidget {
+  const SignUpButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text.rich(
+          TextSpan(
+            text: "By signing up, you agree to the ",
+            children: [
+              TextSpan(
+                text: "Terms of Service",
+                style: TextStyle(
+                  color: Colors.blueAccent,
+                ),
+              ),
+              TextSpan(text: " and "),
+              TextSpan(
+                text: "Privacy Policy",
+                style: TextStyle(
+                  color: Colors.blueAccent,
+                ),
+              ),
+              TextSpan(text: ", including "),
+              TextSpan(
+                text: "Cookie Use",
+                style: TextStyle(
+                  color: Colors.blueAccent,
+                ),
+              ),
+              TextSpan(
+                text:
+                    ". Twitter may use your contact information, including your email address and phone number for purposes outlined in our Privacy Policy, like kepping your account secure and personalizing our services, including ads. ",
+              ),
+              TextSpan(
+                text: "Learn more",
+                style: TextStyle(
+                  color: Colors.blueAccent,
+                ),
+              ),
+              TextSpan(
+                text:
+                    ". Others will be able to find you by email or phone number, when provided unless you choose otherwise ",
+              ),
+              TextSpan(
+                text: "here",
+                style: TextStyle(
+                  color: Colors.blueAccent,
+                ),
+              ),
+              TextSpan(text: "."),
+            ],
+          ),
+          style: TextStyle(
+            fontSize: 15,
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(
+            vertical: 15,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+              30,
+            ),
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          child: const Center(
+            child: Text(
+              "Sign up",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class NextButton extends StatelessWidget {
   const NextButton({
     super.key,
     required this.isDisabled,
-    required this.onPressed,
   });
   final bool isDisabled;
-  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: isDisabled ? () {} : onPressed,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: 25,
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 25,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          30,
         ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(
-            30,
-          ),
-          color: Colors.grey.shade500,
-        ),
-        child: Text(
-          "Next",
-          style: TextStyle(
-            color: Colors.grey.shade300,
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-          ),
+        color: Colors.grey.shade500,
+      ),
+      child: Text(
+        "Next",
+        style: TextStyle(
+          color: Colors.grey.shade300,
+          fontSize: 20,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );
@@ -176,9 +294,11 @@ class TextWidget extends StatelessWidget {
     super.key,
     required this.fieldType,
     required this.controller,
+    required this.onTap,
   });
   final TextFieldType fieldType;
   final TextEditingController controller;
+  final VoidCallback onTap;
 
   void _onTap(BuildContext context) async {
     {
