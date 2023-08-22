@@ -1,3 +1,4 @@
+import 'package:animation_class/screens/onboarding/create_account_screen.dart';
 import 'package:animation_class/screens/onboarding/svg/apple.dart';
 import 'package:animation_class/screens/onboarding/svg/google.dart';
 import 'package:animation_class/screens/onboarding/svg/twitter.dart';
@@ -13,7 +14,12 @@ class InitialScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: SvgPicture.string(
+          twitterString,
+          height: 30,
+        ),
+      ),
       body: SizedBox(
         width: double.infinity,
         child: Padding(
@@ -22,10 +28,6 @@ class InitialScreen extends StatelessWidget {
           ),
           child: Column(
             children: [
-              SvgPicture.string(
-                twitterString,
-                height: 30,
-              ),
               Expanded(
                 flex: 4,
                 child: Center(
@@ -50,7 +52,7 @@ class InitialScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const InitialScreen(),
+                      builder: (context) => const CreateAccountScreen(),
                     ),
                   );
                 },
