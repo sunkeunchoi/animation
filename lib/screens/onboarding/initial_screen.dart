@@ -9,6 +9,7 @@ class InitialScreen extends StatelessWidget {
   static const String title = "See what's happening\nin the world right now";
   static const String terms = "By signing up, you agree to our Terms,\nPrivacy Policy, and Cookie Use.";
   static const String alread = "Already have an account? Log in";
+
   const InitialScreen({super.key});
 
   @override
@@ -52,7 +53,7 @@ class InitialScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const CreateAccountScreen(),
+                      builder: (context) => CreateAccountScreen(),
                     ),
                   );
                 },
