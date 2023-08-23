@@ -20,6 +20,7 @@ class InitialScreen extends StatelessWidget {
           twitterString,
           height: 30,
         ),
+        automaticallyImplyLeading: false,
       ),
       body: SizedBox(
         width: double.infinity,
@@ -42,11 +43,37 @@ class InitialScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const Divider(color: Colors.transparent),
+              const SizedBox(
+                height: 20,
+              ),
               const SocialButton(social: Social.google),
-              const Divider(color: Colors.transparent),
+              const SizedBox(
+                height: 20,
+              ),
               const SocialButton(social: Social.apple),
-              const Divider(color: Colors.transparent),
+              SizedBox(
+                height: 40,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+                      ),
+                    ),
+                    Text(
+                      "   or   ",
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
+                      ),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               const SocialButton(),
               // RoundButton(
               //   text: "Create account",
@@ -176,7 +203,7 @@ class SocialButton extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           border: Border.all(
-            color: social != null ? Theme.of(context).colorScheme.onSurface : Colors.black,
+            color: social != null ? Theme.of(context).colorScheme.onSurface.withOpacity(0.4) : Colors.black,
           ),
           borderRadius: BorderRadius.circular(30),
           color: social != null ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.onSurface,
@@ -185,12 +212,13 @@ class SocialButton extends StatelessWidget {
           clipBehavior: Clip.none,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 100),
+              padding: const EdgeInsets.only(left: 110),
               child: Text(
                 social == null ? "Create account" : social!.text,
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontSize: 18,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: FontWeight.w800,
                       color: social != null
                           ? Theme.of(context).colorScheme.onSurface
                           : Theme.of(context).colorScheme.surface,
