@@ -47,17 +47,18 @@ class InitialScreen extends StatelessWidget {
               const Divider(color: Colors.transparent),
               const SocialButton(social: Social.apple),
               const Divider(color: Colors.transparent),
-              RoundButton(
-                text: "Create account",
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CreateAccountScreen(),
-                    ),
-                  );
-                },
-              ),
+              const SocialButton(),
+              // RoundButton(
+              //   text: "Create account",
+              //   onPressed: () {
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) => const CreateAccountScreen(),
+              //       ),
+              //     );
+              //   },
+              // ),
               const SizedBox(height: 25),
               Flexible(
                 child: Text.rich(
@@ -151,36 +152,60 @@ extension SocialExtension on Social {
 class SocialButton extends StatelessWidget {
   const SocialButton({
     super.key,
-    required this.social,
+    this.social,
   });
-  final Social social;
+  final Social? social;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 70,
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+    return GestureDetector(
+      onTap: social == null
+          ? () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CreateAccountScreen(),
+                ),
+              );
+            }
+          : () {},
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(
+          vertical: 20,
         ),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: social != null ? Theme.of(context).colorScheme.onSurface : Colors.black,
+          ),
+          borderRadius: BorderRadius.circular(30),
+          color: social != null ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.onSurface,
+        ),
+        child: Stack(
+          clipBehavior: Clip.none,
           children: [
-            SvgPicture.string(
-              social.svg,
-              height: 30,
+            Padding(
+              padding: const EdgeInsets.only(left: 100),
+              child: Text(
+                social == null ? "Create account" : social!.text,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w900,
+                      color: social != null
+                          ? Theme.of(context).colorScheme.onSurface
+                          : Theme.of(context).colorScheme.surface,
+                    ),
+              ),
             ),
-            const SizedBox(width: 20),
-            Text(
-              social.text,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w900,
-                  ),
-            ),
+            if (social != null)
+              Positioned(
+                left: 50,
+                top: -4,
+                child: SvgPicture.string(
+                  social!.svg,
+                  height: 30,
+                ),
+              ),
           ],
         ),
       ),
