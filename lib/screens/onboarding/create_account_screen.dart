@@ -25,7 +25,8 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
-
+  bool isVisible = false;
+  final initialDate = DateTime.now();
   @override
   void initState() {
     super.initState();
@@ -45,15 +46,34 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: widget.isAgreed == true
-          ? null
-          : BottomAppBar(
-              elevation: 5,
-              height: MediaQuery.of(context).copyWith().size.height / 3,
-              child: DatePickerIOS(
-                controller: _dobController,
+      resizeToAvoidBottomInset: false,
+      bottomNavigationBar: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        child: BottomAppBar(
+          height: isVisible ? MediaQuery.of(context).copyWith().size.height / 3 : 25,
+          child: CupertinoTheme(
+            data: CupertinoThemeData(
+              textTheme: CupertinoTextThemeData(
+                dateTimePickerTextStyle: TextStyle(
+                  color: isVisible ? Colors.black : Colors.white,
+                  fontSize: isVisible ? 20 : 0,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
+            child: CupertinoDatePicker(
+              backgroundColor: Colors.white,
+              initialDateTime: initialDate.subtract(const Duration(days: 365 * 25)),
+              maximumDate: initialDate.subtract(const Duration(days: 365 * 13)),
+              mode: CupertinoDatePickerMode.date,
+              onDateTimeChanged: (DateTime value) {
+                var text = DateFormat.yMMMMd('en_US').format(value);
+                _dobController.value = TextEditingValue(text: text);
+              },
+            ),
+          ),
+        ),
+      ),
       appBar: AppBar(
         title: SvgPicture.string(
           twitterString,
@@ -108,10 +128,17 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                 controller: _emailController,
                 onTap: () => setState(() {}),
               ),
-              TextWidget(
-                fieldType: TextFieldType.dob,
-                controller: _dobController,
-                onTap: () => setState(() {}),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isVisible = true;
+                  });
+                },
+                child: TextWidget(
+                  fieldType: TextFieldType.dob,
+                  controller: _dobController,
+                  onTap: () {},
+                ),
               ),
               if (!widget.isAgreed)
                 Expanded(
@@ -260,7 +287,7 @@ class NextButton extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(
         vertical: 10,
-        horizontal: 25,
+        horizontal: 20,
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
@@ -354,41 +381,6 @@ class TextWidget extends StatelessWidget {
             ? "This will not be shown publicly. Confirm your own age, even if this account is for a business, a pet, or something else."
             : null,
         labelText: fieldType.title,
-      ),
-    );
-  }
-}
-
-class DatePickerIOS extends StatelessWidget {
-  const DatePickerIOS({
-    super.key,
-    required this.controller,
-  });
-
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoTheme(
-      data: const CupertinoThemeData(
-        textTheme: CupertinoTextThemeData(
-          primaryColor: CupertinoColors.white,
-          dateTimePickerTextStyle: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-      ),
-      child: CupertinoDatePicker(
-        initialDateTime: DateTime.now(),
-        maximumDate: DateTime.now(),
-        minimumYear: 1900,
-        mode: CupertinoDatePickerMode.date,
-        onDateTimeChanged: (DateTime value) {
-          var text = DateFormat.yMMMMd('en_US').format(value);
-          controller.text = text;
-        },
       ),
     );
   }
