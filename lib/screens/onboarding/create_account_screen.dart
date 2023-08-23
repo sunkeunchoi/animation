@@ -1,4 +1,3 @@
-import 'package:animation_class/screens/onboarding/create_account_bloc.dart';
 import 'package:animation_class/screens/onboarding/customize_experience_screen.dart';
 import 'package:animation_class/screens/onboarding/svg/twitter.dart';
 import 'package:flutter/cupertino.dart';
@@ -46,24 +45,35 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: widget.isAgreed == true
+          ? null
+          : BottomAppBar(
+              elevation: 5,
+              height: MediaQuery.of(context).copyWith().size.height / 3,
+              child: DatePickerIOS(
+                controller: _dobController,
+              ),
+            ),
       appBar: AppBar(
         title: SvgPicture.string(
           twitterString,
           height: 30,
         ),
-        leading: TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text(
-            "Cancel",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
+        leading: widget.isAgreed == true
+            ? null
+            : TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
         leadingWidth: 100,
       ),
       body: Padding(
@@ -302,18 +312,18 @@ class TextWidget extends StatelessWidget {
 
   void _onTap(BuildContext context) async {
     {
-      Scaffold.of(context).showBottomSheet(
-        elevation: 2,
-        (BuildContext context) => Container(
-          height: MediaQuery.of(context).copyWith().size.height / 3,
-          decoration: const BoxDecoration(
-            border: Border(
-              top: BorderSide(color: Colors.grey, width: 0.5),
-            ),
-          ),
-          child: DatePickerIOS(controller: controller),
-        ),
-      );
+      // Scaffold.of(context).showBottomSheet(
+      //   elevation: 2,
+      //   (BuildContext context) => Container(
+      //     height: MediaQuery.of(context).copyWith().size.height / 3,
+      //     decoration: const BoxDecoration(
+      //       border: Border(
+      //         top: BorderSide(color: Colors.grey, width: 0.5),
+      //       ),
+      //     ),
+      //     child: DatePickerIOS(controller: controller),
+      //   ),
+      // );
       // showCupertinoDialog(
       //   barrierDismissible: true,
       //   context: context,
