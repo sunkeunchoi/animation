@@ -19,6 +19,22 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: onBoardingColors,
         useMaterial3: true,
+        textTheme: const TextTheme(
+          titleLarge: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.w800,
+            letterSpacing: -1.5,
+          ),
+          bodyMedium: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+            letterSpacing: -0.5,
+          ),
+          bodySmall: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 16,
+          ),
+        ),
         inputDecorationTheme: InputDecorationTheme(
           labelStyle: const TextStyle(
             color: Colors.black54,

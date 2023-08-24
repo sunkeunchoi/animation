@@ -1,6 +1,8 @@
 import 'package:animation_class/screens/movies/movies_screen.dart';
 import 'package:animation_class/screens/onboarding/confirmation_code_screen.dart';
 import 'package:animation_class/screens/onboarding/initial_screen.dart';
+import 'package:animation_class/screens/onboarding/interest_screen.dart';
+import 'package:animation_class/screens/onboarding/password_screen.dart';
 import 'package:flutter/material.dart';
 
 class MenuScreen extends StatelessWidget {
@@ -38,6 +40,18 @@ class MenuScreen extends StatelessWidget {
                   _goto(context, const ConfirmationCodeScreen());
                 },
                 child: const Text("Onboarding 2"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _goto(context, const PasswordScreen());
+                },
+                child: const Text("Onboarding 3"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _goto(context, const InterestScreen());
+                },
+                child: const Text("Onboarding 4"),
               ),
             ],
           ),

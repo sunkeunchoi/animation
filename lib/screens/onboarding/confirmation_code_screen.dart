@@ -1,51 +1,83 @@
-import 'package:animation_class/screens/onboarding/svg/twitter.dart';
+import 'package:animation_class/screens/onboarding/widgets/app_bar.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class ConfirmationCodeScreen extends StatelessWidget {
   const ConfirmationCodeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: SvgPicture.string(
-          twitterString,
-          height: 30,
-        ),
-      ),
-      body: SizedBox(
-        width: double.infinity,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 30,
+    return Common(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 20),
+          Text(
+            "We sent you a code",
+            style: Theme.of(context).textTheme.titleLarge,
           ),
-          child: Column(
-            children: [
-              const Text("We sent you a code"),
-              const Text("Enter it below to verify"),
-              const Text('john.mobbin@gmail.com'),
-              const Row(
-                children: [],
-              ),
-              const Text("Didn't receive email?"),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20,
+          const SizedBox(height: 20),
+          Text(
+            "Enter it below to verify",
+            style: TextStyle(
+              color: Colors.grey.shade700,
+            ),
+          ),
+          Text(
+            'john.mobbin@gmail.com',
+            style: TextStyle(
+              color: Colors.grey.shade700,
+            ),
+          ),
+          const Expanded(
+            child: Row(
+              children: [],
+            ),
+          ),
+          Text(
+            "Didn't receive email?",
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.blueAccent,
                 ),
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    30,
-                  ),
-                  color: Colors.grey,
-                ),
-                child: const Text("Next"),
-              ),
-            ],
+          ),
+          const SizedBox(height: 20),
+          const NextButton(
+            isEnabled: false,
+          ),
+          const SizedBox(height: 10),
+        ],
+      ),
+    );
+  }
+}
+
+class NextButton extends StatelessWidget {
+  const NextButton({
+    super.key,
+    required this.isEnabled,
+  });
+  final bool isEnabled;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(
+        vertical: 15,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          30,
+        ),
+        color: isEnabled ? Colors.black : Colors.grey.shade600,
+      ),
+      child: Center(
+        child: Text(
+          "Next",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w800,
+            color: isEnabled ? Colors.white : Colors.grey.shade400,
           ),
         ),
       ),
