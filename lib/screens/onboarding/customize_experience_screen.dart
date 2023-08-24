@@ -144,7 +144,7 @@ class _CustomizeExperienceScreenState extends State<CustomizeExperienceScreen> {
                     vertical: 20,
                   ),
                   decoration: BoxDecoration(
-                    color: isSelected ? Colors.black : Colors.grey.shade600,
+                    color: isSelected ? Colors.black : Colors.grey.shade500,
                     borderRadius: const BorderRadius.all(
                       Radius.circular(30),
                     ),
@@ -153,7 +153,7 @@ class _CustomizeExperienceScreenState extends State<CustomizeExperienceScreen> {
                     child: Text(
                       "Next",
                       style: TextStyle(
-                        color: isSelected ? Colors.white : Colors.grey.shade200,
+                        color: isSelected ? Colors.white : Colors.grey.shade300,
                         fontSize: 18,
                         fontWeight: FontWeight.w800,
                       ),

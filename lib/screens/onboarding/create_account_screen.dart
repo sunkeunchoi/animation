@@ -26,6 +26,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
   bool isVisible = false;
+  bool isNotValid = false;
   final initialDate = DateTime.now();
   @override
   void initState() {
@@ -33,6 +34,21 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     _nameController.text = widget.name;
     _emailController.text = widget.email;
     _dobController.text = widget.dob;
+    _dobController.addListener(() {
+      setState(() {
+        isNotValid = _nameController.text.isEmpty || _emailController.text.isEmpty || _dobController.text.isEmpty;
+      });
+    });
+    _nameController.addListener(() {
+      setState(() {
+        isNotValid = _nameController.text.isEmpty || _emailController.text.isEmpty || _dobController.text.isEmpty;
+      });
+    });
+    _emailController.addListener(() {
+      setState(() {
+        isNotValid = _nameController.text.isEmpty || _emailController.text.isEmpty || _dobController.text.isEmpty;
+      });
+    });
   }
 
   @override
@@ -43,6 +59,13 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     super.dispose();
   }
 
+  void toggleVisible() {
+    setState(() {
+      isNotValid = _nameController.text.isEmpty || _emailController.text.isEmpty || _dobController.text.isEmpty;
+      isVisible = !isVisible;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,19 +73,19 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
       bottomNavigationBar: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         child: BottomAppBar(
-          height: isVisible ? MediaQuery.of(context).copyWith().size.height / 3 : 25,
+          surfaceTintColor: Colors.white,
+          height: isVisible && !widget.isAgreed ? MediaQuery.of(context).copyWith().size.height / 4 : 0,
           child: CupertinoTheme(
             data: CupertinoThemeData(
               textTheme: CupertinoTextThemeData(
                 dateTimePickerTextStyle: TextStyle(
-                  color: isVisible ? Colors.black : Colors.white,
+                  color: isVisible ? Colors.black : Colors.transparent,
                   fontSize: isVisible ? 20 : 0,
                   fontWeight: FontWeight.w400,
                 ),
               ),
             ),
             child: CupertinoDatePicker(
-              backgroundColor: Colors.white,
               initialDateTime: initialDate.subtract(const Duration(days: 365 * 25)),
               maximumDate: initialDate.subtract(const Duration(days: 365 * 13)),
               mode: CupertinoDatePickerMode.date,
@@ -121,24 +144,20 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
               TextWidget(
                 fieldType: TextFieldType.name,
                 controller: _nameController,
-                onTap: () => setState(() {}),
+                isValid: _nameController.text.length > 6,
               ),
               TextWidget(
                 fieldType: TextFieldType.email,
                 controller: _emailController,
-                onTap: () => setState(() {}),
+                isValid: _emailController.text.contains("@") &&
+                    _emailController.text.contains(".") &&
+                    _emailController.text.length > 6,
               ),
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isVisible = true;
-                  });
-                },
-                child: TextWidget(
-                  fieldType: TextFieldType.dob,
-                  controller: _dobController,
-                  onTap: () {},
-                ),
+              TextWidget(
+                fieldType: TextFieldType.dob,
+                controller: _dobController,
+                onTap: toggleVisible,
+                isValid: _dobController.text.length > 6,
               ),
               if (!widget.isAgreed)
                 Expanded(
@@ -146,9 +165,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                     alignment: Alignment.bottomRight,
                     child: GestureDetector(
                       onTap: () {
-                        if (_nameController.text.isEmpty ||
-                            _emailController.text.isEmpty ||
-                            _dobController.text.isEmpty) {
+                        if (isNotValid) {
                           return;
                         }
                         Navigator.push(
@@ -163,10 +180,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
                         );
                       },
                       child: NextButton(
-                        isDisabled:
-                            _nameController.text.isEmpty || _emailController.text.isEmpty || _dobController.text.isEmpty
-                                ? true
-                                : false,
+                        isDisabled: isNotValid,
                       ),
                     ),
                   ),
@@ -293,12 +307,12 @@ class NextButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(
           30,
         ),
-        color: Colors.grey.shade500,
+        color: isDisabled ? Colors.grey.shade500 : Colors.black,
       ),
       child: Text(
         "Next",
         style: TextStyle(
-          color: Colors.grey.shade300,
+          color: isDisabled ? Colors.grey.shade300 : Colors.white,
           fontSize: 20,
           fontWeight: FontWeight.w500,
         ),
@@ -331,39 +345,19 @@ class TextWidget extends StatelessWidget {
     super.key,
     required this.fieldType,
     required this.controller,
-    required this.onTap,
+    required this.isValid,
+    this.onTap,
   });
   final TextFieldType fieldType;
   final TextEditingController controller;
-  final VoidCallback onTap;
-
-  void _onTap(BuildContext context) async {
-    {
-      // Scaffold.of(context).showBottomSheet(
-      //   elevation: 2,
-      //   (BuildContext context) => Container(
-      //     height: MediaQuery.of(context).copyWith().size.height / 3,
-      //     decoration: const BoxDecoration(
-      //       border: Border(
-      //         top: BorderSide(color: Colors.grey, width: 0.5),
-      //       ),
-      //     ),
-      //     child: DatePickerIOS(controller: controller),
-      //   ),
-      // );
-      // showCupertinoDialog(
-      //   barrierDismissible: true,
-      //   context: context,
-      //   builder: (context) => DatePickerIOS(controller: controller),
-      // );
-    }
-  }
+  final VoidCallback? onTap;
+  final bool isValid;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      onTap: fieldType == TextFieldType.dob ? () => _onTap(context) : null,
+      onTap: onTap,
       readOnly: fieldType == TextFieldType.dob ? true : false,
       style: TextStyle(
         color: Colors.blue.shade600,
@@ -372,11 +366,13 @@ class TextWidget extends StatelessWidget {
       ),
       decoration: InputDecoration(
         focusColor: Colors.black,
-        suffix: const Icon(
-          Icons.check_circle,
-          color: Colors.green,
-          size: 28,
-        ),
+        suffix: isValid
+            ? const Icon(
+                Icons.check_circle,
+                color: Colors.green,
+                size: 28,
+              )
+            : null,
         helperText: fieldType == TextFieldType.dob
             ? "This will not be shown publicly. Confirm your own age, even if this account is for a business, a pet, or something else."
             : null,
