@@ -1,4 +1,5 @@
 import 'package:animation_class/screens/onboarding/confirmation_code_screen.dart';
+import 'package:animation_class/screens/onboarding/interest_detail_screen.dart';
 import 'package:animation_class/screens/onboarding/interest_screen.dart';
 import 'package:animation_class/screens/onboarding/password_screen.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,11 @@ class MyApp extends StatelessWidget {
         textTheme: const TextTheme(
           titleLarge: TextStyle(
             fontSize: 32,
+            fontWeight: FontWeight.w800,
+            letterSpacing: -1.5,
+          ),
+          titleMedium: TextStyle(
+            fontSize: 28,
             fontWeight: FontWeight.w800,
             letterSpacing: -1.5,
           ),
@@ -74,7 +80,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: InterestScreen(),
+      home: InterestDetailScreen(),
     );
   }
 }

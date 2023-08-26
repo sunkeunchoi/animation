@@ -79,7 +79,7 @@ class _InterestScreenState extends State<InterestScreen> {
           }
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const InterestDetailScreen()),
+            MaterialPageRoute(builder: (context) => InterestDetailScreen()),
           );
         },
       ),
