@@ -1,6 +1,7 @@
+import 'package:animation_class/screens/onboarding/confirmation_code_screen.dart';
+import 'package:animation_class/screens/onboarding/password_screen.dart';
 import 'package:flutter/material.dart';
 
-import 'screens/menu_screen.dart';
 import 'screens/onboarding/initial_screen.dart';
 
 void main() {
@@ -72,7 +73,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const MenuScreen(),
+      home: const PasswordScreen(),
     );
   }
 }

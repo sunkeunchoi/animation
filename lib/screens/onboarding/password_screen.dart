@@ -1,9 +1,27 @@
 import 'package:animation_class/screens/onboarding/confirmation_code_screen.dart';
+import 'package:animation_class/screens/onboarding/interest_screen.dart';
 import 'package:animation_class/screens/onboarding/widgets/app_bar.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
-class PasswordScreen extends StatelessWidget {
+class PasswordScreen extends StatefulWidget {
   const PasswordScreen({super.key});
+
+  @override
+  State<PasswordScreen> createState() => _PasswordScreenState();
+}
+
+class _PasswordScreenState extends State<PasswordScreen> {
+  final TextEditingController _controller = TextEditingController();
+  bool isShowPassword = false;
+  bool isCompleted = false;
+  bool isLoading = false;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,26 +43,63 @@ class PasswordScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 40),
-          const TextField(
-            obscureText: true,
+          TextField(
+            autofocus: true,
+            controller: _controller,
+            obscureText: !isShowPassword,
+            onChanged: (value) => {
+              if (value.isNotEmpty && value.length >= 8)
+                {
+                  setState(() {
+                    isCompleted = true;
+                  }),
+                },
+            },
             decoration: InputDecoration(
               hintText: "Password",
-              suffixIcon: Icon(Icons.remove_red_eye),
+              suffix: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isShowPassword = !isShowPassword;
+                      });
+                    },
+                    child: Icon(
+                      isShowPassword ? FluentIcons.eye_24_filled : FluentIcons.eye_off_24_filled,
+                      color: isShowPassword ? Colors.black : Colors.grey.shade400,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  if (isCompleted)
+                    const Icon(
+                      FluentIcons.checkmark_circle_24_filled,
+                      color: Colors.green,
+                    ),
+                ],
+              ),
             ),
           ),
-          const Expanded(
-            child: SizedBox(
-              height: 20,
-            ),
+          const Spacer(),
+          NextButton(
+            isEnabled: isCompleted,
+            onTap: () {
+              setState(() {
+                isLoading = true;
+              });
+              Future.delayed(const Duration(seconds: 1), () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const InterestScreen(),
+                  ),
+                );
+              });
+            },
+            isLoading: isLoading,
           ),
-          const NextButton(
-            isEnabled: false,
-          ),
-          const Expanded(
-            child: SizedBox(
-              height: 20,
-            ),
-          ),
+          const Spacer(),
         ],
       ),
     );
