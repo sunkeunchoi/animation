@@ -50,7 +50,7 @@ class MenuScreen extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  _goto(context, const InterestScreen());
+                  _goto(context, InterestScreen());
                 },
                 child: const Text("Onboarding 4"),
               ),

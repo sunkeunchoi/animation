@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const InterestScreen(),
+      home: InterestScreen(),
     );
   }
 }
