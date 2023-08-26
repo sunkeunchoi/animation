@@ -1,3 +1,4 @@
+import 'package:animation_class/bloc_tutorials/counter_screen.dart';
 import 'package:animation_class/screens/movies/movies_screen.dart';
 import 'package:animation_class/screens/onboarding/confirmation_code_screen.dart';
 import 'package:animation_class/screens/onboarding/initial_screen.dart';
@@ -52,6 +53,12 @@ class MenuScreen extends StatelessWidget {
                   _goto(context, const InterestScreen());
                 },
                 child: const Text("Onboarding 4"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  _goto(context, const CounterScreen());
+                },
+                child: const Text("Counter"),
               ),
             ],
           ),
