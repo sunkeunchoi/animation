@@ -1,4 +1,5 @@
 import 'package:animation_class/screens/onboarding/confirmation_code_screen.dart';
+import 'package:animation_class/screens/onboarding/interest_screen.dart';
 import 'package:animation_class/screens/onboarding/password_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -73,7 +74,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const PasswordScreen(),
+      home: const InterestScreen(),
     );
   }
 }

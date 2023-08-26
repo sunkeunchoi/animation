@@ -44,7 +44,6 @@ class _PasswordScreenState extends State<PasswordScreen> {
           ),
           const SizedBox(height: 40),
           TextField(
-            autofocus: true,
             controller: _controller,
             obscureText: !isShowPassword,
             onChanged: (value) => {
@@ -56,7 +55,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                 },
             },
             decoration: InputDecoration(
-              hintText: "Password",
+              labelText: "Password",
               suffix: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -76,6 +75,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
                     const Icon(
                       FluentIcons.checkmark_circle_24_filled,
                       color: Colors.green,
+                      size: 28,
                     ),
                 ],
               ),
