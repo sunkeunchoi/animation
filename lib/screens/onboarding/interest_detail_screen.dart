@@ -87,9 +87,6 @@ class _InterestDetailScreenState extends State<InterestDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var musicSize = musicItems.length ~/ 3;
-    var entertainmentSize = entertainmentItems.length ~/ 3;
-    var travelSize = travelItems.length ~/ 3;
     return Common(
       bottomAppBar: Container(
         decoration: const BoxDecoration(
@@ -109,14 +106,14 @@ class _InterestDetailScreenState extends State<InterestDetailScreen> {
                     vertical: 10,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.black,
+                    color: selectedItems.length < 3 ? Colors.grey.shade600 : Colors.black,
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  child: const Text(
+                  child: Text(
                     "Next",
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      color: Colors.white,
+                      color: selectedItems.length < 3 ? Colors.grey.shade400 : Colors.white,
                     ),
                   ),
                 ),
@@ -145,7 +142,6 @@ class _InterestDetailScreenState extends State<InterestDetailScreen> {
                 color: Colors.grey.shade700,
               ),
             ),
-            const SizedBox(height: 10),
             Divider(
               color: Colors.grey.shade300,
               thickness: 1,
