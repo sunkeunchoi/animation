@@ -1,3 +1,4 @@
+import 'package:animation_class/screens/navigation_theme/home_screen.dart';
 import 'package:animation_class/screens/onboarding/confirmation_code_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -19,6 +20,20 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: onBoardingColors,
         useMaterial3: true,
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          selectedItemColor: Theme.of(context).colorScheme.onSurface,
+          unselectedItemColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+          selectedIconTheme: const IconThemeData(
+            size: 28,
+          ),
+          unselectedIconTheme: const IconThemeData(
+            size: 28,
+          ),
+          type: BottomNavigationBarType.fixed,
+        ),
         textTheme: const TextTheme(
           titleLarge: TextStyle(
             fontSize: 32,
@@ -77,7 +92,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const ConfirmationCodeScreen(),
+      home: const HomeScreen(),
     );
   }
 }
