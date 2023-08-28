@@ -234,15 +234,29 @@ class PostCardBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Expanded(
+        Expanded(
           flex: 6,
-          child: IntrinsicHeight(
-            child: VerticalDivider(
-              color: Colors.red,
-              thickness: 10,
-              width: 10,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 1,
+                height: images != null ? 400 : null,
+                // constraints: const BoxConstraints.expand(
+                //   height: 400,
+                // ),
+                // height: double.infinity,
+                // height: 300,
+                // height: double.infinity,
+                color: Colors.grey,
+              ),
+            ],
           ),
+          // FittedBox(
+          // fit: BoxFit.fitHeight,
+          // child: Text("│"),
+          // child:
+          // ),
         ),
         const Spacer(),
         Expanded(
