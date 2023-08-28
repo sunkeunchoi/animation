@@ -51,8 +51,7 @@ class MyApp extends StatelessWidget {
             letterSpacing: -0.5,
           ),
           bodySmall: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 16,
+            fontSize: 15,
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(
@@ -92,7 +91,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomeScreen(),
+      home: HomeScreen(),
     );
   }
 }

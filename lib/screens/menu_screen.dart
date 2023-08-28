@@ -45,7 +45,7 @@ class MenuScreen extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  _goto(context, const HomeScreen());
+                  _goto(context, HomeScreen());
                 },
                 child: const Text("Navitation Theme"),
               ),
