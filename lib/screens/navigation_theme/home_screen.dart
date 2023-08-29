@@ -240,15 +240,17 @@ class PostCardBody extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: 1,
-                height: images != null ? 400 : null,
+                width: 3,
+                height: images != null ? 450 : 60,
                 // constraints: const BoxConstraints.expand(
                 //   height: 400,
                 // ),
                 // height: double.infinity,
                 // height: 300,
                 // height: double.infinity,
-                color: Colors.grey,
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(
+                      0.2,
+                    ),
               ),
             ],
           ),
@@ -398,6 +400,9 @@ class PostCardHeader extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.w700,
                         ),
+                  ),
+                  const SizedBox(
+                    width: 8,
                   ),
                   Icon(
                     FluentIcons.checkmark_starburst_24_filled,
