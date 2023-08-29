@@ -3,8 +3,92 @@ import 'package:flutter/material.dart';
 
 import 'widgets/logo.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  static final List<Widget> _pages = [
+    HomePage(),
+    const Center(
+      child: Text(
+        'Search',
+      ),
+    ),
+    const Center(
+      child: Text(
+        'Comments',
+      ),
+    ),
+    const Center(
+      child: Text(
+        'Favorites',
+      ),
+    ),
+    const Center(
+      child: Text(
+        'Profile',
+      ),
+    ),
+  ];
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Logo(),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(FluentIcons.home_24_regular),
+            activeIcon: Icon(FluentIcons.home_24_filled),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(FluentIcons.search_24_regular),
+            activeIcon: Icon(FluentIcons.search_24_filled),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(FluentIcons.comment_note_24_regular),
+            activeIcon: Icon(FluentIcons.comment_note_24_filled),
+            label: 'Comments',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(FluentIcons.heart_24_regular),
+            activeIcon: Icon(FluentIcons.heart_24_filled),
+            label: 'Favorites',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(FluentIcons.person_24_regular),
+            activeIcon: Icon(FluentIcons.person_24_filled),
+            label: 'Profile',
+          ),
+        ],
+      ),
+      body: _pages.elementAt(_selectedIndex),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  HomePage({
+    super.key,
+  });
+
   final List<Map<String, dynamic>> posts = [
     {
       "user": "pubity",
@@ -64,10 +148,6 @@ class HomeScreen extends StatelessWidget {
       "numberOfLikes": 631,
       "numberOfReplies": 64,
       "profile": "https://picsum.photos/id/18/100",
-      "images": [
-        "https://picsum.photos/id/22/600/400",
-        "https://picsum.photos/id/23/600/400",
-      ],
       "followers": [
         "https://picsum.photos/id/19/100",
         "https://picsum.photos/id/20/100",
@@ -99,63 +179,60 @@ class HomeScreen extends StatelessWidget {
         "https://picsum.photos/id/30/100",
         "https://picsum.photos/id/31/100",
       ],
+      "images": [
+        "https://picsum.photos/id/22/400/600",
+      ],
     },
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Logo(),
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 10,
       ),
-      bottomNavigationBar: const BottomBar(),
-      body: ListView.separated(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 10,
-        ),
-        itemBuilder: (context, index) {
-          final Map<String, dynamic> post = posts[index];
-          final String user = post["user"];
-          final String text = post["text"];
-          final String minutes = post["minutes"];
-          final int numberOfLikes = post["numberOfLikes"];
-          final int numberOfReplies = post["numberOfReplies"];
-          final String profile = post["profile"];
-          final List<String> followers = post["followers"];
-          final List<String>? images = post["images"];
-          return Column(
-            children: [
-              PostCardHeader(
-                profile: profile,
-                user: user,
-                minutes: minutes,
-                text: text,
-                isTextOnly: images == null,
+      itemBuilder: (context, index) {
+        final Map<String, dynamic> post = posts[index];
+        final String user = post["user"];
+        final String text = post["text"];
+        final String minutes = post["minutes"];
+        final int numberOfLikes = post["numberOfLikes"];
+        final int numberOfReplies = post["numberOfReplies"];
+        final String profile = post["profile"];
+        final List<String> followers = post["followers"];
+        final List<String>? images = post["images"];
+        return Column(
+          children: [
+            PostCardHeader(
+              profile: profile,
+              user: user,
+              minutes: minutes,
+              text: text,
+              isTextOnly: images == null,
+            ),
+            PostCardBody(
+              images: images,
+            ),
+            PostCardFooter(
+              numberOfReplies: numberOfReplies,
+              numberOfLikes: numberOfLikes,
+              followers: followers,
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+          ],
+        );
+      },
+      separatorBuilder: (context, index) {
+        return Divider(
+          color: Theme.of(context).colorScheme.onSurface.withOpacity(
+                0.2,
               ),
-              PostCardBody(
-                images: images,
-              ),
-              PostCardFooter(
-                numberOfReplies: numberOfReplies,
-                numberOfLikes: numberOfLikes,
-                followers: followers,
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-            ],
-          );
-        },
-        separatorBuilder: (context, index) {
-          return Divider(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(
-                  0.2,
-                ),
-          );
-        },
-        itemCount: posts.length,
-      ),
+        );
+      },
+      itemCount: posts.length,
     );
   }
 }
@@ -277,15 +354,37 @@ class PostCardBody extends StatelessWidget {
                     child: Row(
                       children: [
                         for (final String image in images!)
-                          Container(
-                            margin: const EdgeInsets.only(right: 10),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Image.network(
-                                image,
-                                fit: BoxFit.cover,
+                          Stack(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Image.network(
+                                    image,
+                                    fit: BoxFit.cover,
+                                    height: 400,
+                                  ),
+                                ),
                               ),
-                            ),
+                              Positioned(
+                                bottom: 15,
+                                right: 20,
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.onSurface.withOpacity(
+                                          0.5,
+                                        ),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    FluentIcons.speaker_off_24_filled,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                       ],
                     ),
@@ -437,266 +536,6 @@ class PostCardHeader extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ],
-    );
-  }
-}
-
-class PostCard extends StatelessWidget {
-  const PostCard({
-    super.key,
-    required this.profile,
-    required this.user,
-    required this.minutes,
-    required this.text,
-    required this.numberOfReplies,
-    required this.numberOfLikes,
-    required this.followers,
-    this.images,
-  });
-
-  final String profile;
-  final String user;
-  final String minutes;
-  final String text;
-  final int numberOfReplies;
-  final int numberOfLikes;
-  final List<String> followers;
-  final List<String>? images;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      // crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          flex: 6,
-          child: Column(
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundImage: NetworkImage(profile),
-                  ),
-                  Positioned(
-                    bottom: -6,
-                    right: -6,
-                    child: Container(
-                      padding: const EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Theme.of(context).colorScheme.surface,
-                          width: 3,
-                        ),
-                      ),
-                      child: Icon(
-                        FluentIcons.add_24_filled,
-                        color: Theme.of(context).colorScheme.surface,
-                        size: 18,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Text(
-                "│",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    CircleAvatar(
-                      radius: 10,
-                      backgroundImage: NetworkImage(followers[0]),
-                    ),
-                    Positioned(
-                      right: -35,
-                      top: -10,
-                      child: CircleAvatar(
-                        radius: 12,
-                        backgroundImage: NetworkImage(followers[1]),
-                      ),
-                    ),
-                    Positioned(
-                      right: -18,
-                      bottom: -12,
-                      child: CircleAvatar(
-                        radius: 8,
-                        backgroundImage: NetworkImage(followers[2]),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        const Spacer(
-          flex: 1,
-        ),
-        Expanded(
-          flex: 35,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    user,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                  ),
-                  Icon(
-                    FluentIcons.checkmark_starburst_24_filled,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  const Spacer(),
-                  Text(
-                    minutes,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(
-                            0.5,
-                          ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  Icon(
-                    FluentIcons.more_horizontal_24_filled,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Text(
-                text,
-                maxLines: images == null ? null : 1,
-                overflow: images == null ? null : TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              if (images != null)
-                const SizedBox(
-                  height: 8,
-                ),
-              if (images != null)
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      for (final String image in images!)
-                        Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image.network(
-                              image,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              const SizedBox(
-                height: 8,
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    FluentIcons.heart_24_regular,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  Icon(
-                    FluentIcons.chat_empty_24_regular,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  Icon(
-                    FluentIcons.arrow_repeat_all_24_filled,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  Icon(
-                    FluentIcons.send_24_regular,
-                    color: Theme.of(context).colorScheme.onSurface,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Text(
-                "$numberOfReplies replies · $numberOfLikes likes",
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(
-                            0.6,
-                          ),
-                    ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class BottomBar extends StatelessWidget {
-  const BottomBar({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(FluentIcons.home_24_regular),
-          activeIcon: Icon(FluentIcons.home_24_filled),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(FluentIcons.search_24_regular),
-          activeIcon: Icon(FluentIcons.search_24_filled),
-          label: 'Search',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(FluentIcons.comment_note_24_regular),
-          activeIcon: Icon(FluentIcons.comment_note_24_filled),
-          label: 'Comments',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(FluentIcons.heart_24_regular),
-          activeIcon: Icon(FluentIcons.heart_24_filled),
-          label: 'Favorites',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(FluentIcons.person_24_regular),
-          activeIcon: Icon(FluentIcons.person_24_filled),
-          label: 'Profile',
         ),
       ],
     );
