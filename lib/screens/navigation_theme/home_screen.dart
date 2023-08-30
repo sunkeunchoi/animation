@@ -435,6 +435,108 @@ class PostCardBody extends StatelessWidget {
   }
 }
 
+class MoreBottomSheet extends StatelessWidget {
+  const MoreBottomSheet({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomSheet(
+      onClosing: () {},
+      builder: (context) => SizedBox(
+        height: MediaQuery.of(context).size.height * 0.35,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 10,
+          ),
+          child: Column(
+            children: [
+              ListTile(
+                style: ListTileStyle.list,
+                tileColor: Theme.of(context).colorScheme.onSurface.withOpacity(
+                      0.05,
+                    ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
+                title: Text(
+                  "Unfollow",
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+              ),
+              Divider(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(
+                      0.05,
+                    ),
+                height: 0,
+              ),
+              ListTile(
+                tileColor: Theme.of(context).colorScheme.onSurface.withOpacity(
+                      0.05,
+                    ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
+                ),
+                title: Text(
+                  "Mute",
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+              ),
+              const SizedBox(
+                height: 25,
+              ),
+              ListTile(
+                tileColor: Theme.of(context).colorScheme.onSurface.withOpacity(
+                      0.05,
+                    ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                  ),
+                ),
+                title: Text(
+                  "Hide",
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+              ),
+              Divider(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(
+                      0.05,
+                    ),
+                height: 0,
+              ),
+              ListTile(
+                tileColor: Theme.of(context).colorScheme.onSurface.withOpacity(
+                      0.05,
+                    ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
+                ),
+                title: Text(
+                  "Report",
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: Colors.red,
+                      ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class PostCardHeader extends StatelessWidget {
   const PostCardHeader({
     super.key,
@@ -519,9 +621,23 @@ class PostCardHeader extends StatelessWidget {
                   const SizedBox(
                     width: 20,
                   ),
-                  Icon(
-                    FluentIcons.more_horizontal_24_filled,
-                    color: Theme.of(context).colorScheme.onSurface,
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return const MoreBottomSheet();
+                        },
+                        showDragHandle: true,
+                        barrierColor: Theme.of(context).colorScheme.onSurface.withOpacity(
+                              0.8,
+                            ),
+                      );
+                    },
+                    child: Icon(
+                      FluentIcons.more_horizontal_24_filled,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   ),
                 ],
               ),

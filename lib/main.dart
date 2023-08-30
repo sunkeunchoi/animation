@@ -35,6 +35,10 @@ class MyApp extends StatelessWidget {
           type: BottomNavigationBarType.fixed,
         ),
         textTheme: const TextTheme(
+          labelLarge: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+          ),
           titleLarge: TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.w800,
@@ -91,7 +95,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }
