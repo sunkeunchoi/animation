@@ -435,6 +435,114 @@ class PostCardBody extends StatelessWidget {
   }
 }
 
+class ReportSheet extends StatelessWidget {
+  const ReportSheet({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomSheet(
+      onClosing: () {},
+      builder: (context) => Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 10,
+        ),
+        height: MediaQuery.of(context).size.height * 0.7,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text(
+                "Report",
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w800,
+                      height: 2.5,
+                    ),
+              ),
+              Divider(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(
+                      0.05,
+                    ),
+                height: 0,
+              ),
+              ListTile(
+                minVerticalPadding: 10,
+                title: Text(
+                  "Why are you reporting this thread?",
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(height: 3, fontWeight: FontWeight.w800),
+                ),
+                subtitle: Text(
+                  "Your report is anonymous, except if you're reporting an intellectual property infrigement. If someone is in immediate danger, call the local emergency services - dont' wait.",
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(
+                              0.5,
+                            ),
+                      ),
+                ),
+                isThreeLine: true,
+              ),
+              ListTile(
+                title: const Text("I just don't like it"),
+                trailing: Icon(
+                  FluentIcons.chevron_right_24_regular,
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(
+                        0.5,
+                      ),
+                ),
+              ),
+              ListTile(
+                title: const Text("It's unlawful context under NetzDG"),
+                trailing: Icon(
+                  FluentIcons.chevron_right_24_regular,
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(
+                        0.5,
+                      ),
+                ),
+              ),
+              ListTile(
+                title: const Text("It's spam"),
+                trailing: Icon(
+                  FluentIcons.chevron_right_24_regular,
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(
+                        0.5,
+                      ),
+                ),
+              ),
+              ListTile(
+                title: const Text("Hate speech or symbols"),
+                trailing: Icon(
+                  FluentIcons.chevron_right_24_regular,
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(
+                        0.5,
+                      ),
+                ),
+              ),
+              ListTile(
+                title: const Text("Nudity or sexual activity"),
+                trailing: Icon(
+                  FluentIcons.chevron_right_24_regular,
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(
+                        0.5,
+                      ),
+                ),
+              ),
+              ListTile(
+                title: const Text("I just don't like it"),
+                trailing: Icon(
+                  FluentIcons.chevron_right_24_regular,
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(
+                        0.5,
+                      ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class MoreBottomSheet extends StatelessWidget {
   const MoreBottomSheet({super.key});
 
@@ -626,7 +734,8 @@ class PostCardHeader extends StatelessWidget {
                       showModalBottomSheet(
                         context: context,
                         builder: (context) {
-                          return const MoreBottomSheet();
+                          // return const MoreBottomSheet();
+                          return const ReportSheet();
                         },
                         showDragHandle: true,
                         barrierColor: Theme.of(context).colorScheme.onSurface.withOpacity(
