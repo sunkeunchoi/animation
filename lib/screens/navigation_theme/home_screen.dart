@@ -621,6 +621,18 @@ class MoreBottomSheet extends StatelessWidget {
                 height: 0,
               ),
               ListTile(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return const ReportSheet();
+                    },
+                    showDragHandle: true,
+                    barrierColor: Theme.of(context).colorScheme.onSurface.withOpacity(
+                          0.8,
+                        ),
+                  );
+                },
                 tileColor: Theme.of(context).colorScheme.onSurface.withOpacity(
                       0.05,
                     ),
@@ -734,8 +746,7 @@ class PostCardHeader extends StatelessWidget {
                       showModalBottomSheet(
                         context: context,
                         builder: (context) {
-                          // return const MoreBottomSheet();
-                          return const ReportSheet();
+                          return const MoreBottomSheet();
                         },
                         showDragHandle: true,
                         barrierColor: Theme.of(context).colorScheme.onSurface.withOpacity(
