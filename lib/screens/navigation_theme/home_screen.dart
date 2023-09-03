@@ -1,3 +1,5 @@
+import 'package:animation_class/screens/navigation_theme/activity_page.dart';
+import 'package:animation_class/screens/navigation_theme/search_page.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
@@ -248,17 +250,9 @@ class _HomeScreenState extends State<HomeScreen> {
       case 0:
         return HomePage();
       case 1:
-        return const Center(
-          child: Text(
-            'Search',
-          ),
-        );
+        return const SearchPage();
       case 3:
-        return const Center(
-          child: Text(
-            'Favorites',
-          ),
-        );
+        return const ActivityPage();
       case 4:
         return const Center(
           child: Text(
