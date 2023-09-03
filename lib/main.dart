@@ -20,6 +20,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: onBoardingColors,
         useMaterial3: true,
+        tabBarTheme: TabBarTheme(
+          indicatorColor: Colors.transparent,
+          splashFactory: NoSplash.splashFactory,
+          labelColor: Theme.of(context).colorScheme.surface,
+          unselectedLabelColor: Theme.of(context).colorScheme.onSurface,
+        ),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
           showSelectedLabels: false,
           showUnselectedLabels: false,
