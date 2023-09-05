@@ -1,4 +1,5 @@
 import 'package:animation_class/screens/navigation_theme/activity_page.dart';
+import 'package:animation_class/screens/navigation_theme/profile_page.dart';
 import 'package:animation_class/screens/navigation_theme/search_page.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -12,26 +13,6 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-// const ListTile(
-//                   title: Text(
-//                     "New Thread",
-//                     textAlign: TextAlign.center,
-//                     style: TextStyle(fontWeight: FontWeight.w800),
-//                   ),
-//                   leading: Text(
-//                     "Cancel",
-//                     style: TextStyle(
-//                       color: Colors.red,
-//                     ),
-//                   ),
-//                   trailing: Spacer(),
-//                 ),
-//                 Divider(
-//                   color: Theme.of(context).colorScheme.onSurface.withOpacity(
-//                         0.05,
-//                       ),
-//                   height: 0,
-//                 ),
 class WriteCommentPage extends StatefulWidget {
   const WriteCommentPage({super.key});
 
@@ -254,11 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case 3:
         return const ActivityPage();
       case 4:
-        return const Center(
-          child: Text(
-            'Profile',
-          ),
-        );
+        return const ProfilePage();
       default:
         return const Center(
           child: Text(
@@ -272,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Logo(),
+        title: _selectedIndex == 0 ? const Logo() : null,
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
