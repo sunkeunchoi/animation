@@ -14,6 +14,7 @@ class _PrivacyScreenState extends State<PrivacyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: 4,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(FluentIcons.home_24_regular),
