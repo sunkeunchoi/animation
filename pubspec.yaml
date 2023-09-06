@@ -42,6 +42,9 @@ dependencies:
   equatable: ^2.0.5
   flutter_svg: ^2.0.7
   intl: any
+  camera: ^0.10.5+4
+  image_picker: ^1.0.4
+  permission_handler: ^10.4.4
 
 dev_dependencies:
   flutter_test:
