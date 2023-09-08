@@ -28,6 +28,8 @@
 	<string>Upload Video for Nomadcoder</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Upload Video for Nomadcoder</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Upload Video for Nomadcoder</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
