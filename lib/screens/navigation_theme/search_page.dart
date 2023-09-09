@@ -121,6 +121,7 @@ class ProfileCard extends StatelessWidget {
             profileName,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
           ),
           const SizedBox(
@@ -162,7 +163,9 @@ class ProfileCard extends StatelessWidget {
         ),
         child: Text(
           "Follow",
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
         ),
       ),
     );

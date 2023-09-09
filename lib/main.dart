@@ -1,6 +1,7 @@
-import 'package:animation_class/screens/navigation_theme/home_screen.dart';
 import 'package:animation_class/screens/nomad_coders/theme.dart';
 import 'package:flutter/material.dart';
+
+import 'screens/nomad_coders/main_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,10 +16,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Animations',
       debugShowCheckedModeBanner: false,
-      darkTheme: darkTheme,
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
       theme: lightTheme,
-      home: const HomeScreen(),
+      darkTheme: darkTheme,
+      home: const MainScreen(),
     );
   }
 }
