@@ -2,6 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import 'domain/user.dart';
+import 'settings_screen.dart';
 import 'widgets/camera.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -54,8 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          // builder: (context) => const SettingsScreen(),
-                          builder: (context) => const Text("Settings"),
+                          builder: (context) => const SettingsScreen(),
                         ),
                       );
                     },
