@@ -3,6 +3,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'dart:io' show Platform;
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -25,7 +26,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
 
     final cameraDenied = cameraPermission.isDenied || cameraPermission.isPermanentlyDenied;
     final microphoneDenied = microphonePermission.isDenied || microphonePermission.isPermanentlyDenied;
-    final photosDenied = photosPermission.isDenied || photosPermission.isPermanentlyDenied;
+    final photosDenied = Platform.isIOS ? photosPermission.isDenied || photosPermission.isPermanentlyDenied : false;
     final hasPermission = !cameraDenied && !microphoneDenied && !photosDenied;
     setState(() {
       _hasPermission = hasPermission;
@@ -61,23 +62,23 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
       await prepareCamera();
     } else {
       if (!mounted) return;
-      // await showDialog(
-      //   barrierColor: Theme.of(context).colorScheme.surface,
-      //   barrierDismissible: false,
-      //   context: context,
-      //   builder: (context) => AlertDialog(
-      //     title: const Text("Access required"),
-      //     content: const Text(
-      //       "To use Nomad Coder Study App, allow Camera and Microphone access.",
-      //     ),
-      //     actions: [
-      //       TextButton(
-      //         onPressed: () => openAppSettings(),
-      //         child: const Text("Open settings"),
-      //       ),
-      //     ],
-      //   ),
-      // );
+      await showDialog(
+        barrierColor: Theme.of(context).colorScheme.surface,
+        barrierDismissible: false,
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text("Access required"),
+          content: const Text(
+            "To use Nomad Coder Study App, allow Camera and Microphone access.",
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => openAppSettings(),
+              child: const Text("Open settings"),
+            ),
+          ],
+        ),
+      );
     }
   }
 
