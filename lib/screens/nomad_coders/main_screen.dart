@@ -2,6 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import './widgets/logo.dart';
+import 'activity_screen.dart';
 import 'home_screen.dart';
 import 'search_screen.dart';
 
@@ -43,8 +44,7 @@ class _MainScreenState extends State<MainScreen> {
       case 1:
         return const SearchPage();
       case 3:
-        return const Text("ActivityPage");
-      // return const ActivityPage();
+        return const ActivityScreen();
       case 4:
         return const Text("ProfilePage");
       // return const ProfilePage();

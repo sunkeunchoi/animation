@@ -1,10 +1,7 @@
-import 'package:animation_class/bloc_tutorials/counter_screen.dart';
 import 'package:animation_class/screens/movies/movies_screen.dart';
 import 'package:animation_class/screens/navigation_theme/home_screen.dart';
 import 'package:animation_class/screens/onboarding/confirmation_code_screen.dart';
 import 'package:animation_class/screens/onboarding/initial_screen.dart';
-import 'package:animation_class/screens/onboarding/interest_screen.dart';
-import 'package:animation_class/screens/onboarding/password_screen.dart';
 import 'package:flutter/material.dart';
 
 class MenuScreen extends StatelessWidget {
