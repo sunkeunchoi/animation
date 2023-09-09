@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 import './widgets/logo.dart';
 import 'activity_screen.dart';
+import 'domain/user.dart';
 import 'home_screen.dart';
+import 'profile_screen.dart';
 import 'search_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -46,8 +48,16 @@ class _MainScreenState extends State<MainScreen> {
       case 3:
         return const ActivityScreen();
       case 4:
-        return const Text("ProfilePage");
-      // return const ProfilePage();
+        return ProfileScreen(
+          profile: User(
+            name: "Jane",
+            nickName: "jane_mobbin",
+            url: "threads.net",
+            bio: "Plant enthusiast!",
+            profileUrl: "https://picsum.photos/id/100/100",
+            followers: ["https://picsum.photos/id/201/100", "https://picsum.photos/id/301/100"],
+          ),
+        );
       default:
         return const Center(
           child: Text(
