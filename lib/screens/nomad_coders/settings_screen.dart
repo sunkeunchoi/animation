@@ -98,12 +98,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SwitchListTile.adaptive(
-              value: context.read<ThemeCubit>().state.themeMode == ThemeMode.light,
+              value: context.read<ThemeCubit>().state.themeMode == ThemeMode.dark,
               onChanged: (value) {
                 context.read<ThemeCubit>().switchTheme();
               },
               title: Text(
-                "Theme mode",
+                "Dark mode",
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
