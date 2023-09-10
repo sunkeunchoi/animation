@@ -15,7 +15,7 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   final ThemePersistence _themeRepository;
   late StreamSubscription<CustomTheme> _themeSubscription;
-  static bool _isDarkTheme = false; // used to determine if the current theme is dark
+  bool _isDarkTheme = false; // used to determine if the current theme is dark
 
   void getCurrentTheme() {
     // Since `getTheme()` returns a stream, we listen to the output
