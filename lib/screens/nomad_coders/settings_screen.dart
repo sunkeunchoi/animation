@@ -1,6 +1,8 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'application/theme_cubit.dart';
 import 'privacy_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -95,6 +97,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SwitchListTile.adaptive(
+              value: context.read<ThemeCubit>().state.themeMode == ThemeMode.light,
+              onChanged: (value) {
+                context.read<ThemeCubit>().switchTheme();
+              },
+              title: Text(
+                "Theme mode",
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+              ),
+            ),
             ListTile(
               leading: const Icon(FluentIcons.person_add_24_regular),
               title: Text(
