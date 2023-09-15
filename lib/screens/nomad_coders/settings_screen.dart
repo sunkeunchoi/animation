@@ -13,12 +13,6 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool isLoggedOut = false;
-  late bool theme;
-  @override
-  void initState() {
-    super.initState();
-    theme = context.read<SettingsViewModel>().theme;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,8 +100,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SwitchListTile.adaptive(
               title: const Text("Change theme"),
               subtitle: const Text("Light or dark theme"),
-              value: theme,
-              onChanged: (value) => context.read<SettingsViewModel>().toggleTheme(),
+              value: context.watch<SettingsViewModel>().themeMode == ThemeMode.dark,
+              onChanged: (value) => context.read<SettingsViewModel>().toggleTheme(context),
             ),
             ListTile(
               leading: const Icon(FluentIcons.person_add_24_regular),

@@ -33,24 +33,30 @@ class App extends StatelessWidget {
   }
 }
 
-class AppView extends StatelessWidget {
+class AppView extends StatefulWidget {
   const AppView({super.key});
 
   @override
+  State<AppView> createState() => _AppViewState();
+}
+
+class _AppViewState extends State<AppView> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Consumer<SettingsViewModel>(
-      builder: (context, SettingsViewModel model, child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Animations',
-          theme: lightTheme,
-          darkTheme: darkTheme,
-          // The themeMode is the most important property in showing
-          // proper theme. The value comes from ThemeState class.
-          themeMode: model.isDark ? ThemeMode.dark : ThemeMode.light,
-          home: const MainScreen(),
-        );
-      },
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Animations',
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      // The themeMode is the most important property in showing
+      // proper theme. The value comes from ThemeState class.
+      themeMode: context.watch<SettingsViewModel>().themeMode,
+      home: const MainScreen(),
     );
   }
 }
