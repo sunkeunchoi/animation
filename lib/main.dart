@@ -1,7 +1,6 @@
 import 'package:animation_class/screens/nomad_coders/settings/settings_view_model.dart';
 import 'package:animation_class/screens/nomad_coders/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
