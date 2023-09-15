@@ -7,3 +7,5 @@ class ThemeConfiguration extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+final videoConfig = ThemeConfiguration();
