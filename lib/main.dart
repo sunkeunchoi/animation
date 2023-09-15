@@ -1,7 +1,7 @@
 import 'package:animation_class/screens/nomad_coders/settings/settings_view_model.dart';
 import 'package:animation_class/screens/nomad_coders/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'screens/nomad_coders/main_screen.dart';
@@ -13,11 +13,9 @@ void main() async {
   final repository = SettingsRepository(preferences);
 
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (context) => SettingsViewModel(repository),
-        ),
+    ProviderScope(
+      overrides: [
+        settingProvider.overrideWith(() => SettingsViewModel(repository)),
       ],
       child: const App(),
     ),
@@ -33,14 +31,13 @@ class App extends StatelessWidget {
   }
 }
 
-class AppView extends StatefulWidget {
+class AppView extends ConsumerStatefulWidget {
   const AppView({super.key});
-
   @override
-  State<AppView> createState() => _AppViewState();
+  ConsumerState createState() => _AppViewState();
 }
 
-class _AppViewState extends State<AppView> {
+class _AppViewState extends ConsumerState<AppView> {
   @override
   void initState() {
     super.initState();
@@ -48,14 +45,18 @@ class _AppViewState extends State<AppView> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = ref.watch(settingProvider).whenOrNull(
+          data: (data) => data ? ThemeMode.dark : ThemeMode.light,
+          loading: () => ThemeMode.system,
+          error: (error, stackTrace) => ThemeMode.system,
+        );
+    print(theme);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Animations',
       theme: lightTheme,
       darkTheme: darkTheme,
-      // The themeMode is the most important property in showing
-      // proper theme. The value comes from ThemeState class.
-      themeMode: context.watch<SettingsViewModel>().themeMode,
+      themeMode: theme,
       home: const MainScreen(),
     );
   }

@@ -1,21 +1,32 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'privacy_screen.dart';
 import 'settings/settings_view_model.dart';
 
-class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
-
+class SettingsScreen extends ConsumerStatefulWidget {
+  const SettingsScreen({Key? key}) : super(key: key);
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
+  ConsumerState createState() => _SettingsState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class _SettingsState extends ConsumerState<SettingsScreen> {
   bool isLoggedOut = false;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    var isDark = ref.watch(settingProvider).whenOrNull(
+          data: (data) => data,
+          loading: () => false,
+          error: (error, stackTrace) => false,
+        );
+    print("$isDark from settings_screen.dart");
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       resizeToAvoidBottomInset: false,
@@ -100,8 +111,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             SwitchListTile.adaptive(
               title: const Text("Change theme"),
               subtitle: const Text("Light or dark theme"),
-              value: context.watch<SettingsViewModel>().themeMode == ThemeMode.dark,
-              onChanged: (value) => context.read<SettingsViewModel>().toggleTheme(context),
+              value: isDark ?? false,
+              onChanged: (value) async => await ref.read(settingProvider.notifier).toggleTheme(),
             ),
             ListTile(
               leading: const Icon(FluentIcons.person_add_24_regular),
@@ -185,9 +196,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             TextButton(
                               onPressed: () {
                                 Navigator.pop(context);
-                                setState(() {
-                                  isLoggedOut = true;
-                                });
+                                setState(() {});
                               },
                               child: const Text("Log out"),
                             ),

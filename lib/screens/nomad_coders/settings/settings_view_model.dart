@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'settings_repository.dart';
 
-class SettingsViewModel extends ChangeNotifier {
+class SettingsViewModel extends AsyncNotifier<bool> {
   final SettingsRepository _localDb;
   SettingsViewModel(this._localDb) {
     _getThemeMode();
@@ -13,14 +16,13 @@ class SettingsViewModel extends ChangeNotifier {
     final isDarkMode = await _localDb.isDarkMode();
     if (isDarkMode == true) {
       _themeMode = ThemeMode.dark;
-      notifyListeners();
     } else if (isDarkMode == false) {
       _themeMode = ThemeMode.light;
-      notifyListeners();
     }
   }
 
-  Future<void> toggleTheme(BuildContext context) async {
+  Future<void> toggleTheme() async {
+    state = const AsyncValue.loading();
     switch (_themeMode) {
       case ThemeMode.light:
         _themeMode = ThemeMode.dark;
@@ -29,14 +31,22 @@ class SettingsViewModel extends ChangeNotifier {
         _themeMode = ThemeMode.light;
         break;
       case ThemeMode.system:
-        if (Theme.of(context).scaffoldBackgroundColor == Colors.white) {
-          _themeMode = ThemeMode.dark;
-        } else {
-          _themeMode = ThemeMode.light;
-        }
+        _themeMode = ThemeMode.light;
+        break;
     }
+    var value = _themeMode == ThemeMode.dark;
+    await _localDb.setTheme(value);
+    state = AsyncValue.data(value);
+  }
 
-    notifyListeners();
-    await _localDb.setTheme(_themeMode == ThemeMode.dark);
+  @override
+  FutureOr<bool> build() async {
+    var isDark = await _localDb.isDarkMode();
+    print("$isDark from settings_view_model.dart");
+    return isDark;
   }
 }
+
+final settingProvider = AsyncNotifierProvider<SettingsViewModel, bool>(
+  () => throw UnimplementedError(),
+);
