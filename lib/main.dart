@@ -1,3 +1,4 @@
+import 'package:animation_class/firebase_options.dart';
 import 'package:animation_class/screens/nomad_coders/settings/settings_view_model.dart';
 import 'package:animation_class/screens/nomad_coders/theme.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final preferences = await SharedPreferences.getInstance();
   final repository = SettingsRepository(preferences);
-
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     ProviderScope(
       overrides: [
