@@ -35,7 +35,7 @@ const ColorScheme lightColors = ColorScheme(
   inverseSurface: Color(0xff121518),
   onInverseSurface: Color(0xfff5f5f5),
   inversePrimary: Color(0xffddfeff),
-  surfaceTint: Color(0xff4496e0),
+  surfaceTint: Color(0xffffffff),
 );
 
 const ColorScheme darkColors = ColorScheme(
@@ -67,7 +67,7 @@ const ColorScheme darkColors = ColorScheme(
   inverseSurface: Color(0xfffafdff),
   onInverseSurface: Color(0xff131314),
   inversePrimary: Color(0xff5c7278),
-  surfaceTint: Color(0xffb4e6ff),
+  surfaceTint: Color(0xffffffff),
 );
 
 final baseTheme = ThemeData(

@@ -43,7 +43,7 @@ dependencies:
   intl: any
   camera: ^0.10.5+4
   image_picker: ^1.0.4
-  permission_handler: ^10.4.4
+  permission_handler: ^11.0.0
   shared_preferences: ^2.2.1
   flutter_riverpod: ^2.4.0
   firebase_auth: ^4.9.0
@@ -67,7 +67,7 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.
 flutter:
-
+  generate: true # Add this line
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

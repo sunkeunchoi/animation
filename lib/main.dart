@@ -40,6 +40,7 @@ class AppView extends ConsumerWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      locale: const Locale('en'),
       supportedLocales: S.delegate.supportedLocales,
       title: 'Animations',
       theme: lightTheme,
