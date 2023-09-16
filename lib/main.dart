@@ -11,8 +11,8 @@ import 'screens/nomad_coders/main_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final preferences = await SharedPreferences.getInstance();
-  final repository = ThemeRepository(preferences);
+  // final preferences = await SharedPreferences.getInstance();
+  // final repository = ThemeRepository(preferences);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -21,18 +21,9 @@ void main() async {
       overrides: [
         // settingProvider.overrideWith(() => SettingsViewModel(repository)),
       ],
-      child: App(),
+      child: AppView(),
     ),
   );
-}
-
-class App extends StatelessWidget {
-  const App({super.key});
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return const AppView();
-  }
 }
 
 class AppView extends ConsumerWidget {
