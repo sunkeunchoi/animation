@@ -24,6 +24,11 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>CFBundleLocalizations</key>
+	<array>
+    	<string>en</string>
+    	<string>ko_KR</string>
+	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>Upload Video for Nomadcoder</string>
 	<key>NSMicrophoneUsageDescription</key>
