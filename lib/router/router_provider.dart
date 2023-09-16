@@ -13,7 +13,7 @@ final routerProvider = Provider((ref) {
       final isLoggedIn = ref.read(authRepository).isLoggedIn;
       if (!isLoggedIn) {
         if (state.path != SignUpScreen.path && state.path != LoginScreen.path) {
-          return SignUpScreen.path;
+          return LoginScreen.path;
         }
       }
       return null;
