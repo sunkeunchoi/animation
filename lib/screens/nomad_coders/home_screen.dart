@@ -101,6 +101,8 @@ final List<Map<String, dynamic>> posts = [
 ];
 
 class HomeScreen extends StatelessWidget {
+  static const name = 'home';
+  static const path = '/home';
   const HomeScreen({
     super.key,
   });
