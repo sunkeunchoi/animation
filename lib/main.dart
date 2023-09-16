@@ -3,8 +3,10 @@ import 'package:animation_class/screens/nomad_coders/theme.dart';
 import 'package:animation_class/theme/theme_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'generated/l10n.dart';
 import 'router/router_provider.dart';
 
 void main() async {
@@ -32,6 +34,13 @@ class AppView extends ConsumerWidget {
     return MaterialApp.router(
       routerConfig: ref.watch(routerProvider),
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
       title: 'Animations',
       theme: lightTheme,
       darkTheme: darkTheme,
