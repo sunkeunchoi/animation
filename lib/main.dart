@@ -1,27 +1,27 @@
 import 'package:animation_class/firebase_options.dart';
-import 'package:animation_class/screens/nomad_coders/settings/settings_view_model.dart';
 import 'package:animation_class/screens/nomad_coders/theme.dart';
+import 'package:animation_class/theme/theme_repository.dart';
+import 'package:animation_class/theme/theme_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'screens/nomad_coders/main_screen.dart';
-import 'screens/nomad_coders/settings/settings_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final preferences = await SharedPreferences.getInstance();
-  final repository = SettingsRepository(preferences);
+  final repository = ThemeRepository(preferences);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    ProviderScope(
+    const ProviderScope(
       overrides: [
-        settingProvider.overrideWith(() => SettingsViewModel(repository)),
+        // settingProvider.overrideWith(() => SettingsViewModel(repository)),
       ],
-      child: const App(),
+      child: App(),
     ),
   );
 }
@@ -35,32 +35,17 @@ class App extends StatelessWidget {
   }
 }
 
-class AppView extends ConsumerStatefulWidget {
+class AppView extends ConsumerWidget {
   const AppView({super.key});
-  @override
-  ConsumerState createState() => _AppViewState();
-}
-
-class _AppViewState extends ConsumerState<AppView> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
-  Widget build(BuildContext context) {
-    var theme = ref.watch(settingProvider).whenOrNull(
-          data: (data) => data ? ThemeMode.dark : ThemeMode.light,
-          loading: () => ThemeMode.system,
-          error: (error, stackTrace) => ThemeMode.system,
-        );
-    print(theme);
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Animations',
       theme: lightTheme,
       darkTheme: darkTheme,
-      themeMode: theme,
+      themeMode: ref.watch(themeProvider),
       home: const MainScreen(),
     );
   }

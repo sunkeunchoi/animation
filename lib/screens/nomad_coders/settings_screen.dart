@@ -1,32 +1,22 @@
+import 'package:animation_class/theme/theme_view_model.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'privacy_screen.dart';
-import 'settings/settings_view_model.dart';
 
-class SettingsScreen extends ConsumerStatefulWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
+
   @override
-  ConsumerState createState() => _SettingsState();
+  State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsState extends ConsumerState<SettingsScreen> {
+class _SettingsScreenState extends State<SettingsScreen> {
   bool isLoggedOut = false;
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-    var isDark = ref.watch(settingProvider).whenOrNull(
-          data: (data) => data,
-          loading: () => false,
-          error: (error, stackTrace) => false,
-        );
-    print("$isDark from settings_screen.dart");
-
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       resizeToAvoidBottomInset: false,
@@ -108,12 +98,7 @@ class _SettingsState extends ConsumerState<SettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SwitchListTile.adaptive(
-              title: const Text("Change theme"),
-              subtitle: const Text("Light or dark theme"),
-              value: isDark ?? false,
-              onChanged: (value) async => await ref.read(settingProvider.notifier).toggleTheme(),
-            ),
+            const ThemeButton(),
             ListTile(
               leading: const Icon(FluentIcons.person_add_24_regular),
               title: Text(
@@ -227,6 +212,22 @@ class _SettingsState extends ConsumerState<SettingsScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ThemeButton extends ConsumerWidget {
+  const ThemeButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SwitchListTile.adaptive(
+      title: const Text("Change theme"),
+      subtitle: const Text("Light or dark theme"),
+      value: ref.watch(themeProvider) == ThemeMode.dark,
+      onChanged: (value) => ref.read(themeProvider.notifier).toggleTheme(),
     );
   }
 }
