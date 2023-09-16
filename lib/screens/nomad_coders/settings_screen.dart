@@ -1,4 +1,4 @@
-import 'package:animation_class/theme/theme_view_model.dart';
+import 'package:animation_class/theme/theme_provider.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
