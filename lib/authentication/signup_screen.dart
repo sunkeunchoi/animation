@@ -1,4 +1,4 @@
-import 'package:animation_class/authentication/authentication_provider.dart';
+import 'package:animation_class/authentication/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -10,6 +10,7 @@ import 'custom_app_bar.dart';
 import 'email_field.dart';
 import 'full_primary_button.dart';
 import 'password_field.dart';
+import 'signup_form_provider.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -65,6 +66,7 @@ class CreateAccountButton extends ConsumerWidget {
       onTap: () => ref.read(authenticationService.notifier).signUp(context),
       child: FullPrimaryButton(
         text: S.of(context).signup_screen_CreateNewAccountButton,
+        isEnabled: ref.watch(signUpFormProvider).canSignUp,
       ),
     );
   }

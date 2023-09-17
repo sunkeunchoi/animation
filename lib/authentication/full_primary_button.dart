@@ -4,8 +4,10 @@ class FullPrimaryButton extends StatelessWidget {
   const FullPrimaryButton({
     super.key,
     required this.text,
+    required this.isEnabled,
   });
   final String text;
+  final bool isEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +22,14 @@ class FullPrimaryButton extends StatelessWidget {
         vertical: 20,
       ),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary,
+        color: isEnabled ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.surfaceVariant,
         borderRadius: BorderRadius.circular(5),
       ),
       child: Text(
         text,
         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
+              color:
+                  isEnabled ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onSurfaceVariant,
             ),
       ),
     );

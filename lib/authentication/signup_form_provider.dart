@@ -40,7 +40,8 @@ class SignUpFormState {
   bool get isValidEmail => email.isNotEmpty && emailRegExp.hasMatch(email);
   bool get isValidPassword => password.isNotEmpty && passwordRegExp.hasMatch(password);
   bool get isValidConfirmPassword => confirmPassword.isNotEmpty && password == confirmPassword;
-  bool get isValid => isValidEmail && isValidPassword && isValidConfirmPassword;
+  bool get canLogin => isValidEmail && isValidPassword;
+  bool get canSignUp => isValidEmail && isValidPassword;
   SignUpFormState copyWith({
     String? email,
     String? password,
