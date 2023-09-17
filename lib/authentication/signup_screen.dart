@@ -1,12 +1,14 @@
+import 'package:animation_class/authentication/authentication_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../generated/l10n.dart';
 import '../widgets/logo.dart';
 import '../widgets/meta.dart';
-import 'creaet_account_button.dart';
+import 'full_outlined_button.dart';
 import 'custom_app_bar.dart';
 import 'email_field.dart';
-import 'forgot_password_button.dart';
-import 'login_button.dart';
+import 'full_primary_button.dart';
 import 'password_field.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -16,37 +18,53 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: CustomAppBar(),
+    return Scaffold(
+      appBar: const CustomAppBar(),
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Spacer(),
-              Logo(),
-              Spacer(),
-              EmailField(),
-              PasswordField(),
-              SizedBox(
+              const Spacer(),
+              const Logo(),
+              const Spacer(),
+              const EmailField(),
+              const PasswordField(),
+              const SizedBox(
                 height: 10,
               ),
-              LoginButton(),
-              Spacer(flex: 2),
-              CreaetAccountButton(
-                isCreateAccount: false,
+              const CreateAccountButton(),
+              const Spacer(flex: 2),
+              FullOutlinedButton(
+                text: S.of(context).signup_screen_AlreadyHaveAccountButton,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Opacity(
+              const Opacity(
                 opacity: 0.5,
                 child: Meta(),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class CreateAccountButton extends ConsumerWidget {
+  const CreateAccountButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return GestureDetector(
+      onTap: () => ref.read(authenticationService.notifier).signUp(context),
+      child: FullPrimaryButton(
+        text: S.of(context).signup_screen_CreateNewAccountButton,
       ),
     );
   }

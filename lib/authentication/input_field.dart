@@ -24,6 +24,7 @@ class InputField extends StatelessWidget {
         vertical: 10,
       ),
       child: TextFormField(
+        autocorrect: false,
         obscureText: isPassword && !showPassword,
         obscuringCharacter: '*',
         onChanged: onChanged,

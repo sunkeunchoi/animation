@@ -91,20 +91,20 @@ class S {
   }
 
   /// `Create new account`
-  String get login_screen_CreateNewAccountButton {
+  String get signup_screen_CreateNewAccountButton {
     return Intl.message(
       'Create new account',
-      name: 'login_screen_CreateNewAccountButton',
+      name: 'signup_screen_CreateNewAccountButton',
       desc: '',
       args: [],
     );
   }
 
   /// `Already have an account?`
-  String get login_screen_AlreadyHaveAccountButton {
+  String get signup_screen_AlreadyHaveAccountButton {
     return Intl.message(
       'Already have an account?',
-      name: 'login_screen_AlreadyHaveAccountButton',
+      name: 'signup_screen_AlreadyHaveAccountButton',
       desc: '',
       args: [],
     );

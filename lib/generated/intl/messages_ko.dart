@@ -23,15 +23,15 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "language": MessageLookupByLibrary.simpleMessage("한글"),
-        "login_screen_AlreadyHaveAccountButton":
-            MessageLookupByLibrary.simpleMessage("이미 계정이 있으신가요?"),
-        "login_screen_CreateNewAccountButton":
-            MessageLookupByLibrary.simpleMessage("계정을 만드세요"),
         "login_screen_EmailHint": MessageLookupByLibrary.simpleMessage("이메일"),
         "login_screen_ForgotPasswordButton":
             MessageLookupByLibrary.simpleMessage("비밀번호를 잊으셨나요?"),
         "login_screen_LoginButton": MessageLookupByLibrary.simpleMessage("로그인"),
         "login_screen_PasswordHint":
-            MessageLookupByLibrary.simpleMessage("패스워드")
+            MessageLookupByLibrary.simpleMessage("패스워드"),
+        "signup_screen_AlreadyHaveAccountButton":
+            MessageLookupByLibrary.simpleMessage("이미 계정이 있으신가요?"),
+        "signup_screen_CreateNewAccountButton":
+            MessageLookupByLibrary.simpleMessage("계정을 만드세요")
       };
 }

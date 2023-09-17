@@ -4,7 +4,7 @@
     "login_screen_PasswordHint": "패스워드",
     "login_screen_LoginButton": "로그인",
     "login_screen_ForgotPasswordButton": "비밀번호를 잊으셨나요?",
-    "login_screen_CreateNewAccountButton": "계정을 만드세요",
-    "login_screen_AlreadyHaveAccountButton": "이미 계정이 있으신가요?",
+    "signup_screen_CreateNewAccountButton": "계정을 만드세요",
+    "signup_screen_AlreadyHaveAccountButton": "이미 계정이 있으신가요?",
     "language": "한글"
 }
