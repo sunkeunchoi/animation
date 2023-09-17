@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:animation_class/screens/nomad_coders/home_screen.dart';
+import 'package:animation_class/screens/nomad_coders/main_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,17 +15,15 @@ final routerProvider = Provider((ref) {
     redirect: (context, state) {
       final isLoggedIn = ref.read(authRepository).isLoggedIn;
       if (!isLoggedIn) {
-        // print(state.path);
-        // print(state.name);
-        // if (state.path == SignUpScreen.path) {
-        //   return null;
-        // }
-        // if (state.path == LoginScreen.path) {
-        //   print("Redirecting to null");
-        //   return null;
-        // }
-        // print("Redirecting to LoginScreen");
-        // return LoginScreen.path;
+        if (state.path == SignUpScreen.path) {
+          return null;
+        }
+        if (state.path == LoginScreen.path) {
+          print("Redirecting to null");
+          return null;
+        }
+        print("Redirecting to LoginScreen");
+        return LoginScreen.path;
       }
       return null;
     },
@@ -33,9 +34,9 @@ final routerProvider = Provider((ref) {
         builder: (context, state) => const SignUpScreen(),
       ),
       GoRoute(
-        name: HomeScreen.name,
-        path: HomeScreen.path,
-        builder: (context, state) => const HomeScreen(),
+        name: MainScreen.name,
+        path: MainScreen.path,
+        builder: (context, state) => const MainScreen(),
       ),
       GoRoute(
         name: LoginScreen.name,

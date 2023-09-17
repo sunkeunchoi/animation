@@ -9,6 +9,8 @@ import 'profile_screen.dart';
 import 'search_screen.dart';
 
 class MainScreen extends StatefulWidget {
+  static const name = 'home';
+  static const path = '/home';
   const MainScreen({super.key});
 
   @override

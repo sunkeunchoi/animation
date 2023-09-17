@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:animation_class/authentication/login_screen.dart';
+import 'package:animation_class/screens/nomad_coders/main_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -50,7 +52,7 @@ class AuthenticateService extends AsyncNotifier<void> {
       log("${state.error}");
       showFirebaseErrorSnack(context, state.error as FirebaseException);
     } else {
-      context.goNamed(HomeScreen.name);
+      context.goNamed(MainScreen.name);
     }
   }
 
@@ -71,11 +73,24 @@ class AuthenticateService extends AsyncNotifier<void> {
       log("${state.error}");
       showFirebaseErrorSnack(context, state.error as FirebaseException);
     } else {
-      context.goNamed(HomeScreen.name);
+      context.goNamed(MainScreen.name);
     }
   }
 
-  signOut() => _authRepo.signOut();
+  Future<void> signOut(BuildContext context) async {
+    state = const AsyncValue.loading();
+
+    state = await AsyncValue.guard(() async {
+      await _authRepo.signOut();
+    });
+
+    if (state.hasError) {
+      log("${state.error}");
+      showFirebaseErrorSnack(context, state.error as FirebaseException);
+    } else {
+      context.goNamed(LoginScreen.name);
+    }
+  }
 }
 
 final authenticationService = AsyncNotifierProvider<AuthenticateService, void>(

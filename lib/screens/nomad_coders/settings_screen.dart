@@ -3,6 +3,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../authentication/authentication_service.dart';
 import 'privacy_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -178,13 +179,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               },
                               child: const Text("Cancel"),
                             ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                                setState(() {});
-                              },
-                              child: const Text("Log out"),
-                            ),
+                            const LogOutButton(),
                           ],
                         ),
                       );
@@ -212,6 +207,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class LogOutButton extends ConsumerWidget {
+  const LogOutButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextButton(
+      onPressed: () {
+        ref.read(authenticationService.notifier).signOut(context);
+      },
+      child: const Text("Log out"),
     );
   }
 }
