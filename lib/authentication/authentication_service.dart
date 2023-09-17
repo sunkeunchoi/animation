@@ -39,14 +39,13 @@ class AuthenticateService extends AsyncNotifier<void> {
   }
 
   Future<void> signIn({
-    required String email,
-    required String password,
     required BuildContext context,
   }) async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(
-      () => _authRepo.signIn(email, password),
-    );
+    final form = ref.read(signUpFormProvider);
+    state = await AsyncValue.guard(() async {
+      _authRepo.signIn(form.email, form.password);
+    });
     if (state.hasError) {
       log("${state.error}");
       showFirebaseErrorSnack(context, state.error as FirebaseException);

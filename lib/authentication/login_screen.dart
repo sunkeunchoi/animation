@@ -1,3 +1,4 @@
+import 'package:animation_class/authentication/authentication_service.dart';
 import 'package:animation_class/authentication/full_outlined_button.dart';
 import 'package:animation_class/authentication/custom_app_bar.dart';
 import 'package:animation_class/authentication/email_field.dart';
@@ -6,6 +7,7 @@ import 'package:animation_class/authentication/full_primary_button.dart';
 import 'package:animation_class/authentication/password_field.dart';
 import 'package:animation_class/widgets/logo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../generated/l10n.dart';
 import '../widgets/meta.dart';
@@ -33,9 +35,7 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              FullPrimaryButton(
-                text: S.of(context).login_screen_LoginButton,
-              ),
+              const LoginButton(),
               const ForgotPasswordButton(),
               const Spacer(flex: 2),
               FullOutlinedButton(
@@ -51,6 +51,22 @@ class LoginScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class LoginButton extends ConsumerWidget {
+  const LoginButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return GestureDetector(
+      onTap: () => ref.read(authenticationService.notifier).signIn(context: context),
+      child: FullPrimaryButton(
+        text: S.of(context).login_screen_LoginButton,
       ),
     );
   }
