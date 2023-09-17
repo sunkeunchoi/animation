@@ -14,17 +14,17 @@ final routerProvider = Provider((ref) {
     initialLocation: LoginScreen.path,
     redirect: (context, state) {
       final isLoggedIn = ref.read(authRepository).isLoggedIn;
-      if (!isLoggedIn) {
-        if (state.path == SignUpScreen.path) {
-          return null;
-        }
-        if (state.path == LoginScreen.path) {
-          print("Redirecting to null");
-          return null;
-        }
-        print("Redirecting to LoginScreen");
-        return LoginScreen.path;
-      }
+      // if (!isLoggedIn) {
+      //   if (state.path == SignUpScreen.path) {
+      //     return null;
+      //   }
+      //   if (state.path == LoginScreen.path) {
+      //     print("Redirecting to null");
+      //     return null;
+      //   }
+      //   print("Redirecting to LoginScreen");
+      //   return LoginScreen.path;
+      // }
       return null;
     },
     routes: [
