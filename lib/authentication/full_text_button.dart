@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class FullOutlinedButton extends StatelessWidget {
-  const FullOutlinedButton({
+class FullTextButton extends StatelessWidget {
+  const FullTextButton({
     super.key,
     required this.text,
   });
@@ -17,14 +17,7 @@ class FullOutlinedButton extends StatelessWidget {
       ),
       padding: const EdgeInsets.symmetric(
         horizontal: 20,
-        vertical: 10,
-      ),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
-          width: 2,
-        ),
-        borderRadius: BorderRadius.circular(5),
+        vertical: 15,
       ),
       child: Text(
         text,

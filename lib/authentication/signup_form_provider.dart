@@ -7,7 +7,7 @@ class SignUpFormProvider extends StateNotifier<SignUpFormState> {
   }
 
   void updatePassword(String password) {
-    state = state.copyWith(email: password);
+    state = state.copyWith(password: password);
   }
 
   void toggleShowPassword() {
@@ -40,8 +40,8 @@ class SignUpFormState {
   bool get isValidEmail => email.isNotEmpty && emailRegExp.hasMatch(email);
   bool get isValidPassword => password.isNotEmpty && passwordRegExp.hasMatch(password);
   bool get isValidConfirmPassword => confirmPassword.isNotEmpty && password == confirmPassword;
-  bool get canLogin => isValidEmail && isValidPassword;
-  bool get canSignUp => isValidEmail && isValidPassword;
+  bool get canLogin => isValidEmail && password.isNotEmpty && password.length >= 8;
+  bool get canSignUp => isValidEmail && password.isNotEmpty && password.length >= 8;
   SignUpFormState copyWith({
     String? email,
     String? password,

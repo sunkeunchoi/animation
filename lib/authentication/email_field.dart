@@ -1,5 +1,4 @@
 import 'package:animation_class/authentication/input_field.dart';
-import 'package:animation_class/authentication/login_screen.dart';
 import 'package:animation_class/authentication/signup_form_provider.dart';
 import 'package:animation_class/generated/l10n.dart';
 import 'package:flutter/material.dart';

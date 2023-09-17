@@ -2,16 +2,18 @@ import 'package:animation_class/authentication/authentication_service.dart';
 import 'package:animation_class/authentication/full_outlined_button.dart';
 import 'package:animation_class/authentication/custom_app_bar.dart';
 import 'package:animation_class/authentication/email_field.dart';
-import 'package:animation_class/authentication/forgot_password_button.dart';
+import 'package:animation_class/authentication/full_text_button.dart';
 import 'package:animation_class/authentication/full_primary_button.dart';
 import 'package:animation_class/authentication/password_field.dart';
 import 'package:animation_class/authentication/signup_form_provider.dart';
 import 'package:animation_class/widgets/logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../generated/l10n.dart';
 import '../widgets/meta.dart';
+import 'signup_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -37,10 +39,18 @@ class LoginScreen extends StatelessWidget {
                 height: 10,
               ),
               const LoginButton(),
-              const ForgotPasswordButton(),
+              GestureDetector(
+                onTap: () => context.pushNamed(SignUpScreen.name),
+                child: FullTextButton(
+                  text: S.of(context).login_screen_ForgotPasswordButton,
+                ),
+              ),
               const Spacer(flex: 2),
-              FullOutlinedButton(
-                text: S.of(context).signup_screen_CreateNewAccountButton,
+              GestureDetector(
+                onTap: () => context.pushNamed(SignUpScreen.name),
+                child: FullOutlinedButton(
+                  text: S.of(context).signup_screen_CreateNewAccountButton,
+                ),
               ),
               const SizedBox(
                 height: 10,
