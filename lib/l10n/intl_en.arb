@@ -1,4 +1,10 @@
 {
     "@@locale": "en",
+    "login_screen_EmailHint": "Mobile number or email",
+    "login_screen_PasswordHint": "Password",
+    "login_screen_LoginButton": "Log in",
+    "login_screen_ForgotPasswordButton": "Forgot password?",
+    "login_screen_CreateNewAccountButton": "Create new account",
+    "login_screen_AlreadyHaveAccountButton": "Already have an account?",
     "language": "English (US)"
 }

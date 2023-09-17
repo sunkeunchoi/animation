@@ -8,7 +8,7 @@ final lightTheme = baseTheme.copyWith(
 );
 const ColorScheme lightColors = ColorScheme(
   brightness: Brightness.light,
-  primary: Color(0xff4496e0),
+  primary: Color(0xff2c62d9),
   onPrimary: Color(0xffffffff),
   primaryContainer: Color(0xffb4e6ff),
   onPrimaryContainer: Color(0xff0f1314),

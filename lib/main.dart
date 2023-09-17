@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import 'generated/l10n.dart';
 import 'router/router_provider.dart';
@@ -16,6 +17,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  GoRouter.optionURLReflectsImperativeAPIs = true;
   runApp(
     const ProviderScope(
       overrides: [
@@ -45,7 +47,7 @@ class AppView extends ConsumerWidget {
       title: 'Animations',
       theme: lightTheme,
       darkTheme: darkTheme,
-      themeMode: ref.watch(themeProvider),
+      themeMode: ref.watch(themeProvider) == ThemeMode.dark ? ThemeMode.dark : ThemeMode.light,
     );
   }
 }

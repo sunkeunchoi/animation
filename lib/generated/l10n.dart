@@ -50,6 +50,66 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Mobile number or email`
+  String get login_screen_EmailHint {
+    return Intl.message(
+      'Mobile number or email',
+      name: 'login_screen_EmailHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get login_screen_PasswordHint {
+    return Intl.message(
+      'Password',
+      name: 'login_screen_PasswordHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Log in`
+  String get login_screen_LoginButton {
+    return Intl.message(
+      'Log in',
+      name: 'login_screen_LoginButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forgot password?`
+  String get login_screen_ForgotPasswordButton {
+    return Intl.message(
+      'Forgot password?',
+      name: 'login_screen_ForgotPasswordButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create new account`
+  String get login_screen_CreateNewAccountButton {
+    return Intl.message(
+      'Create new account',
+      name: 'login_screen_CreateNewAccountButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Already have an account?`
+  String get login_screen_AlreadyHaveAccountButton {
+    return Intl.message(
+      'Already have an account?',
+      name: 'login_screen_AlreadyHaveAccountButton',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `English (US)`
   String get language {
     return Intl.message(
@@ -67,7 +127,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
-      Locale.fromSubtags(languageCode: 'ko', countryCode: 'KR'),
+      Locale.fromSubtags(languageCode: 'ko'),
     ];
   }
 
