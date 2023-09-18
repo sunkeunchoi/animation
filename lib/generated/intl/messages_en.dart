@@ -34,6 +34,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "signup_screen_AlreadyHaveAccountButton":
             MessageLookupByLibrary.simpleMessage("Already have an account?"),
         "signup_screen_CreateNewAccountButton":
-            MessageLookupByLibrary.simpleMessage("Create new account")
+            MessageLookupByLibrary.simpleMessage("Create new account"),
       };
 }

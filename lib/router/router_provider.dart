@@ -1,6 +1,4 @@
-import 'dart:convert';
 
-import 'package:animation_class/screens/nomad_coders/home_screen.dart';
 import 'package:animation_class/screens/nomad_coders/main_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
