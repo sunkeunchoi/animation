@@ -32,6 +32,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "signup_screen_AlreadyHaveAccountButton":
             MessageLookupByLibrary.simpleMessage("이미 계정이 있으신가요?"),
         "signup_screen_CreateNewAccountButton":
-            MessageLookupByLibrary.simpleMessage("계정을 만드세요")
+            MessageLookupByLibrary.simpleMessage("계정을 만드세요"),
       };
 }
