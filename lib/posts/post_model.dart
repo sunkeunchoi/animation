@@ -65,7 +65,7 @@ class PostModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      'id': id.value,
       'title': title,
       'content': content,
       'imageUrls': imageUrls,

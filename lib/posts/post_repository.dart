@@ -15,10 +15,12 @@ class PostRepository {
   Future<String> uploadImage(File file, String createdBy) async {
     final fileId = const UuidV8().generate();
     final fileRef = _firebaseStorage.ref().child("images/$createdBy/$fileId");
-    return fileRef.putFile(file).storage.ref().getDownloadURL();
+    final task = await fileRef.putFile(file);
+    return task.ref.getDownloadURL();
+    // final url = task.storage.ref().getDownloadURL();
   }
 
   Future<void> uploadPost(PostModel post) async {
-    await _firestore.collection('posts').doc(post.createdBy).update(post.toJson());
+    await _firestore.collection('posts').doc(post.createdBy).set(post.toJson());
   }
 }

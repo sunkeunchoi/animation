@@ -158,8 +158,8 @@ class PostSubmitButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextButton(
-      onPressed: () {
-        ref.read(postService.notifier).uploadPost(
+      onPressed: () async {
+        await ref.read(postService.notifier).uploadPost(
               post: ref.read(postProvider),
             );
         Navigator.pop(context);
