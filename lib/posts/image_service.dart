@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:animation_class/authentication/authentication_repository.dart';
 import 'package:animation_class/posts/post_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,14 +12,37 @@ class ImageService extends AsyncNotifier<void> {
     _postRepository = ref.read(postRepository);
   }
 
-  Future<void> uploadImage(File file) async {
+  Future<void> uploadPost({required PostModel post}) async {
     state = const AsyncValue.loading();
-    
     state = await AsyncValue.guard(
       () async {
-        await _postRepository.uploadImage(file);
-        await ref.
+        await _postRepository.uploadPost(
+          post,
+        );
       },
     );
+    state = const AsyncValue.data(null);
+  }
+
+  Future<void> uploadPostWithImages({
+    required PostModel post,
+    required List<File> images,
+  }) async {
+    state = const AsyncValue.loading();
+    final imageUrls = <String>[];
+    state = await AsyncValue.guard(
+      () async {
+        for (final file in images) {
+          final url = await _postRepository.uploadImage(file, post.createdBy);
+          imageUrls.add(url);
+        }
+        await _postRepository.uploadPost(
+          post.copyWith(
+            imageUrls: imageUrls,
+          ),
+        );
+      },
+    );
+    state = const AsyncValue.data(null);
   }
 }
