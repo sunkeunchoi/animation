@@ -2,6 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets/logo.dart';
+import '../navigation_theme/write_comment_page.dart';
 import 'activity_screen.dart';
 import 'domain/user.dart';
 import 'home_screen.dart';
@@ -27,8 +28,8 @@ class _MainScreenState extends State<MainScreen> {
         showDragHandle: false,
         builder: (context) => Padding(
           padding: MediaQuery.of(context).viewInsets,
-          child: const Text("WriteCommentPage"),
-          // child: const WriteCommentPage(),
+          // child: const Text("WriteCommentPage"),
+          child: const WriteCommentPage(),
         ),
         barrierColor: Theme.of(context).colorScheme.onSurface.withOpacity(
               0.8,

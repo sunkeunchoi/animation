@@ -1,11 +1,10 @@
-
-import 'package:animation_class/screens/nomad_coders/main_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../authentication/authentication_repository.dart';
 import '../authentication/login_screen.dart';
 import '../authentication/signup_screen.dart';
+import '../screens/nomad_coders/main_screen.dart';
 
 final routerProvider = Provider((ref) {
   return GoRouter(
