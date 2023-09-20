@@ -43,10 +43,14 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
   }
 
   Future<void> prepareCamera() async {
+    if (Platform.isIOS) {
+      return;
+    }
     _cameraController = CameraController(
       _isSelfieMode ? _cameras[1] : _cameras[0],
       ResolutionPreset.max,
     );
+
     await _cameraController.initialize();
     await _cameraController.prepareForVideoRecording();
     setState(() {
@@ -102,7 +106,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
 
   @override
   void dispose() {
-    _cameraController.dispose();
+    if (_isCameraInitialized) _cameraController.dispose();
     super.dispose();
   }
 
@@ -110,7 +114,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.resumed:
-        if (!_isCameraInitialized) await initializePermissionAndCamera();
+        if (!_isCameraInitialized && !Platform.isIOS) await initializePermissionAndCamera();
         break;
       case AppLifecycleState.inactive:
         break;

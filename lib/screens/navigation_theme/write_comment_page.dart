@@ -4,6 +4,10 @@ import 'package:animation_class/screens/navigation_theme/camera_screen.dart';
 import 'package:camera/camera.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../posts/post_provider.dart';
+import '../../posts/post_service.dart';
 
 class WriteCommentPage extends StatefulWidget {
   const WriteCommentPage({super.key});
@@ -13,18 +17,6 @@ class WriteCommentPage extends StatefulWidget {
 }
 
 class _WriteCommentPageState extends State<WriteCommentPage> {
-  final _controller = TextEditingController();
-  final _focusNode = FocusNode();
-  bool isEnabled = false;
-  final List<XFile> _images = [];
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -120,112 +112,35 @@ class _WriteCommentPageState extends State<WriteCommentPage> {
                       ),
                     ),
                   ),
-                  Flexible(
+                  const Flexible(
                     flex: 25,
                     child: Padding(
-                      padding: const EdgeInsets.only(
+                      padding: EdgeInsets.only(
                         top: 20,
                         bottom: 20,
                         right: 20,
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "jane_mobbin",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          TextField(
-                            controller: _controller,
-                            focusNode: _focusNode,
-                            onChanged: (value) {
-                              isEnabled = value.isNotEmpty;
-                              setState(() {});
-                            },
-                            autofocus: true,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              contentPadding: const EdgeInsets.only(
-                                top: 5,
-                                bottom: 5,
-                              ),
-                              constraints: BoxConstraints.tightFor(
-                                width: MediaQuery.of(context).size.width * 0.6,
-                              ),
-                              hintText: "Start a thread...",
-                              hintStyle: TextStyle(
-                                fontSize: 16,
-                                letterSpacing: 0,
-                                fontWeight: FontWeight.w400,
-                                color: Theme.of(context).colorScheme.onSurface.withOpacity(
-                                      0.5,
-                                    ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              var images = await Navigator.of(context).push<List<XFile>?>(
-                                CameraScreen.route(),
-                              );
-                              if (images != null && images.isNotEmpty) {
-                                setState(() {
-                                  _images.addAll(images);
-                                  _focusNode.unfocus();
-                                });
-                              }
-                            },
-                            child: Icon(
-                              FluentIcons.attach_24_filled,
-                              color: Theme.of(context).colorScheme.onSurface,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          if (_images.isNotEmpty)
-                            ..._images
-                                .map(
-                                  (e) => [
-                                    Photo(image: e),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                  ],
-                                )
-                                .expand((element) => element)
-                                .toList(),
-                        ],
-                      ),
+                      child: PostPreview(),
                     ),
                   ),
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
+                padding: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                child: const Row(
                   children: [
-                    const Text("Any one can reply"),
-                    const Spacer(),
-                    Text(
-                      "Post",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: isEnabled
-                            ? Theme.of(context).colorScheme.primary
-                            : Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
-                      ),
-                    ),
+                    Text("Any one can reply"),
+                    Spacer(),
+                    PostSubmitButton(),
                   ],
                 ),
+              ),
+              const SizedBox(
+                height: 40,
               ),
             ],
           ),
@@ -235,23 +150,161 @@ class _WriteCommentPageState extends State<WriteCommentPage> {
   }
 }
 
-class NotWorking extends StatelessWidget {
-  const NotWorking({
+class PostSubmitButton extends ConsumerWidget {
+  const PostSubmitButton({
     super.key,
-    required List<XFile> images,
-  }) : _images = images;
-
-  final List<XFile> _images;
+  });
 
   @override
-  Widget build(BuildContext context) {
-    return Flexible(
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) => Photo(image: _images[index]),
-        separatorBuilder: (context, index) => const SizedBox(height: 20),
-        itemCount: _images.length,
-        shrinkWrap: true,
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextButton(
+      onPressed: () {
+        ref.read(postService.notifier).uploadPost(
+              post: ref.read(postProvider),
+            );
+      },
+      child: Text(
+        "Post",
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+          color: ref.watch(postProvider).isValid
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
+        ),
+      ),
+    );
+  }
+}
+
+class PostPreview extends ConsumerWidget {
+  const PostPreview({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "jane_mobbin",
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        const PostTitle(),
+        const PostContent(),
+        const SizedBox(
+          height: 20,
+        ),
+        const PostAttachImagesButton(),
+        const SizedBox(
+          height: 20,
+        ),
+        if (ref.watch(postProvider).imagePaths.isNotEmpty)
+          ...ref
+              .read(postProvider)
+              .imagePaths
+              .map(
+                (e) => [
+                  Photo(image: e),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
+              )
+              .expand((element) => element)
+              .toList(),
+      ],
+    );
+  }
+}
+
+class PostAttachImagesButton extends ConsumerWidget {
+  const PostAttachImagesButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return GestureDetector(
+      onTap: () async {
+        var images = await Navigator.of(context).push<List<XFile>?>(
+          CameraScreen.route(),
+        );
+        if (images != null && images.isNotEmpty) {
+          ref.read(postProvider.notifier).updateImages(images.map((e) => File(e.path)).toList());
+        }
+      },
+      child: Icon(
+        FluentIcons.attach_24_filled,
+        color: Theme.of(context).colorScheme.onSurface,
+      ),
+    );
+  }
+}
+
+class PostTitle extends ConsumerWidget {
+  const PostTitle({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextField(
+      onChanged: (value) {
+        ref.read(postProvider.notifier).updateTitle(value);
+      },
+      autofocus: true,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        contentPadding: const EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        constraints: BoxConstraints.tightFor(
+          width: MediaQuery.of(context).size.width * 0.6,
+        ),
+        hintText: "Start a thread...",
+        hintStyle: TextStyle(
+          fontSize: 16,
+          letterSpacing: 0,
+          fontWeight: FontWeight.w400,
+          color: Theme.of(context).colorScheme.onSurface.withOpacity(
+                0.5,
+              ),
+        ),
+      ),
+    );
+  }
+}
+
+class PostContent extends ConsumerWidget {
+  const PostContent({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return TextField(
+      onChanged: (value) {
+        ref.read(postProvider.notifier).updateContent(value);
+      },
+      autofocus: true,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        contentPadding: const EdgeInsets.only(
+          top: 5,
+          bottom: 5,
+        ),
+        constraints: BoxConstraints.tightFor(
+          width: MediaQuery.of(context).size.width * 0.6,
+        ),
       ),
     );
   }
@@ -263,7 +316,7 @@ class Photo extends StatelessWidget {
     required this.image,
   });
 
-  final XFile image;
+  final File image;
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:animation_class/authentication/authentication_repository.dart';
+import 'package:animation_class/posts/post_model.dart';
 import 'package:animation_class/posts/post_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,33 +15,31 @@ class PostService extends AsyncNotifier<void> {
 
   Future<void> uploadPost({required PostModel post}) async {
     state = const AsyncValue.loading();
+    final userId = ref.read(authRepository).user!.uid;
     state = await AsyncValue.guard(
       () async {
-        await _postRepository.uploadPost(
-          post,
-        );
-      },
-    );
-    state = const AsyncValue.data(null);
-  }
-
-  Future<void> uploadPostWithImages({
-    required PostModel post,
-    required List<File> images,
-  }) async {
-    state = const AsyncValue.loading();
-    final imageUrls = <String>[];
-    state = await AsyncValue.guard(
-      () async {
-        for (final file in images) {
-          final url = await _postRepository.uploadImage(file, post.createdBy);
-          imageUrls.add(url);
+        if (post.imagePaths.isEmpty) {
+          await _postRepository.uploadPost(
+            post.copyWith(
+              createdBy: userId,
+              createdAt: DateTime.now().millisecondsSinceEpoch,
+            ),
+          );
+          return;
+        } else {
+          final imageUrls = <String>[];
+          for (final file in post.imagePaths) {
+            final url = await _postRepository.uploadImage(file, userId);
+            imageUrls.add(url);
+          }
+          await _postRepository.uploadPost(
+            post.copyWith(
+              imageUrls: imageUrls,
+              createdBy: userId,
+              createdAt: DateTime.now().millisecondsSinceEpoch,
+            ),
+          );
         }
-        await _postRepository.uploadPost(
-          post.copyWith(
-            imageUrls: imageUrls,
-          ),
-        );
       },
     );
     state = const AsyncValue.data(null);
