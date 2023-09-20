@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:animation_class/authentication/authentication_repository.dart';
 import 'package:animation_class/posts/post_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ImageService extends AsyncNotifier<void> {
+class PostService extends AsyncNotifier<void> {
   late final PostRepository _postRepository;
   @override
   FutureOr<void> build() {
@@ -46,3 +45,7 @@ class ImageService extends AsyncNotifier<void> {
     state = const AsyncValue.data(null);
   }
 }
+
+final postService = AsyncNotifierProvider<PostService, void>(
+  () => PostService(),
+);
