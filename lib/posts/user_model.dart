@@ -1,4 +1,3 @@
-import 'package:animation_class/posts/post_repository.dart';
 import 'package:animation_class/posts/user_id.dart';
 
 class UserModel {

@@ -162,6 +162,7 @@ class PostSubmitButton extends ConsumerWidget {
         ref.read(postService.notifier).uploadPost(
               post: ref.read(postProvider),
             );
+        Navigator.pop(context);
       },
       child: Text(
         "Post",

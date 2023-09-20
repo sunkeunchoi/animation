@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:animation_class/authentication/authentication_repository.dart';
 import 'package:animation_class/posts/post_model.dart';
