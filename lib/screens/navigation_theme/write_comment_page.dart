@@ -6,8 +6,8 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../posts/post_provider.dart';
-import '../../posts/post_service.dart';
+import '../../models/posts/post_provider.dart';
+import '../../models/posts/post_service.dart';
 
 class WriteCommentPage extends StatefulWidget {
   const WriteCommentPage({super.key});

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:animation_class/posts/post_id.dart';
+import 'package:animation_class/models/posts/post_id.dart';
 
 class PostModel {
   final PostId id;

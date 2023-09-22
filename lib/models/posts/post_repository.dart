@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:animation_class/posts/post_model.dart';
+import 'package:animation_class/models/posts/post_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

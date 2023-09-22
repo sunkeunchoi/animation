@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:animation_class/authentication/authentication_repository.dart';
-import 'package:animation_class/posts/post_model.dart';
-import 'package:animation_class/posts/post_repository.dart';
+import 'package:animation_class/models/posts/post_model.dart';
+import 'package:animation_class/models/posts/post_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PostService extends AsyncNotifier<void> {
